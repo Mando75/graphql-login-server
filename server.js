@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { graphqlExpress, graphiqlExpress} from 'apollo-server-express';
-import {schema} from './server/schemas/rootSchema';
+import {schema} from './server/rootSchema';
 import cors from 'cors';
 import { execute, subscribe } from 'graphql';
 import {createServer } from 'http';
