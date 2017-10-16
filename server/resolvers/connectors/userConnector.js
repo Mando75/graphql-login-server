@@ -1,14 +1,8 @@
-import Mongoose from './mongodb-connection';
+import UserModel from '../mongooseSchemas/monUserSchema';
 
-const UserSchema = Mongoose.Schema({
-    id: Mongoose.Schema.Types.ObjectId,
-    first_name: String,
-    last_name: String,
-    i_number: Number,
-    admin: Boolean,
-    simulation_role: {type: Mongoose.Schema.Types.ObjectId, ref: 'Role'}
-});
-
-const UserModel = Mongoose.model('User', UserSchema);
-
-export default UserModel;
+export function findUserById(user_id) {
+  return UserModel.findById(user_id, (err, user)=>{
+    if(err) { console.log('Error when finding' + user_id); }
+    else { return user; }
+  });
+}

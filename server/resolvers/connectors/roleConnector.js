@@ -1,4 +1,4 @@
-import Mongoose from 'mongodb-connection';
+import Mongoose from 'server/resolvers/mongooseSchemas/mongodb-connection';
 
 const RoleSchema = Mongoose.Schema({
   id: Mongoose.Schema.Types.ObjectId,
