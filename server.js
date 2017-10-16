@@ -39,8 +39,9 @@ server.use('/graphiql', bodyParser.json(), graphiqlExpress({
 
 const ws = createServer(server);
 
+// managing subscriptions
 ws.listen(PORT, () => {
-  console.log(`GraphQL is running on port ${PORT}`);
+  console.log(`GraphQL Server is running on port ${PORT}`);
 
   new SubscriptionServer({
     execute,

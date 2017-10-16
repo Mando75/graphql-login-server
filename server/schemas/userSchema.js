@@ -1,3 +1,8 @@
+/**
+ *  Def of User Schema.
+ *  Also includes mutation to add new Users.
+ * @type {string}
+ */
 const UserSchema = `
   type User {
     id:  ID!

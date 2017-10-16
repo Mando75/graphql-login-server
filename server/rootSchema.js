@@ -1,3 +1,7 @@
+/**
+ * Defines the root schema used for the GraphQL server
+ */
+
 import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
 import UserSchema from './schemas/userSchema';
 import { resolvers } from './resolvers/rootResolver';
@@ -18,9 +22,14 @@ const schemaDef = `
     mutation: Mutation
   }`;
 
+
+/**
+ * Pass makeExecutableSchema an array of type definitions
+ * and resolvers.
+ */
 const schema = makeExecutableSchema({ typeDefs: [
-  schemaDef, RootQuery, Mutation, UserSchema
-] , resolvers: resolvers});
+  schemaDef, RootQuery, Mutation, UserSchema] , resolvers: resolvers});
 //addMockFunctionsToSchema({schema});
+
 
 export {schema}
