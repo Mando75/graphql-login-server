@@ -5,7 +5,8 @@
  */
 const RoleSchema = `
   type SimulationRole {
-    
+    _id: ID!
+    role: String
   }
 `;
 export default RoleSchema;

@@ -1,10 +1,11 @@
 import Mongoose from 'server/mongooseSchemas/mongodb-connection';
 
-const RoleSchema = Mongoose.Schema({
+const SimRoleSchema = Mongoose.Schema({
   id: Mongoose.Schema.Types.ObjectId,
-  name: String
+  role: String
 });
 
-const RoleModel = Mongoose.model('Role', RoleSchema);
+const SimRoleModel = Mongoose.model('Role', SimRoleSchema);
 
-export default RoleModel;
+export default SimRoleModel;
+
