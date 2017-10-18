@@ -17,6 +17,11 @@ const userMap = {
     async users(obj, args) {
       return await User.getUsers();
     }
+  },
+  Mutation: {
+    async addUser(obj, args) {
+      return await User.addUser(args);
+    }
   }
 
 };
