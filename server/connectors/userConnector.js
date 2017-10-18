@@ -6,8 +6,8 @@ import UserModel from '../mongooseSchemas/monUserSchema';
  * @param user_id
  * @returns {Query}
  */
-export function findUserById(user_id) {
-  return UserModel.findById(user_id, (err, user)=>{
+export async function findUserById(user_id) {
+  return await UserModel.findById(user_id, (err, user)=>{
     if(err)
       console.log('Error when finding' + user_id);
     else
@@ -18,8 +18,8 @@ export function findUserById(user_id) {
 /**
  *  Function that returns a list of all users in the db in the form of a Promise
  */
-export function getUsers() {
-  return UserModel.find((err, users)=> {
+export async function getUsers() {
+  return await UserModel.find((err, users)=> {
     if(err)
       console.log('Error when finding users');
     else
@@ -34,8 +34,8 @@ export function getUsers() {
  * @param i_number
  * @returns {Query|*}
  */
-export function findUserByInumber(i_number) {
-  return UserModel.findOne({i_number: i_number}, (err, user)=>{
+export async function findUserByInumber(i_number) {
+  return await UserModel.findOne({i_number: i_number}, (err, user)=>{
     if(err)
       console.log('Error when finding' + i_number);
     else

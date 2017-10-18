@@ -1,4 +1,4 @@
-import Mongoose from 'server/mongooseSchemas/mongodb-connection';
+import Mongoose from './mongodb-connection';
 
 const SimRoleSchema = Mongoose.Schema({
   id: Mongoose.Schema.Types.ObjectId,

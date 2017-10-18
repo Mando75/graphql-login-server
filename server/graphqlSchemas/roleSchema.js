@@ -6,7 +6,14 @@
 const RoleSchema = `
   type SimulationRole {
     _id: ID!
-    role: String
+    role: String!
   }
-`;
+  
+  extend type RootQuery {
+    simulation_roles: [SimulationRole]
+  }
+  
+  extend type Mutation {
+    add_sim_role(role: String!): SimulationRole
+  }`;
 export default RoleSchema;

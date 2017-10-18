@@ -1,5 +1,6 @@
 import { merge } from 'lodash';
 import userMap from './userResolver';
+import roleMap from './roleResolver';
 
 /**
  * Our root resolver map.
@@ -13,4 +14,4 @@ const rootResolver = {
   }
 };
 
-export const resolvers = merge(rootResolver, userMap);
+export const resolvers = merge(rootResolver, userMap, roleMap);

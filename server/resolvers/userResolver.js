@@ -23,7 +23,6 @@ const userMap = {
       return await User.addUser(args);
     }
   }
-
 };
 
 export default userMap;
