@@ -6,9 +6,26 @@ import cors from 'cors';
 import { execute, subscribe } from 'graphql';
 import {createServer } from 'http';
 import {SubscriptionServer } from 'subscriptions-transport-ws';
+import * as _ from 'lodash';
+import * as jwt from 'jsonwebtoken';
+import * as passport from 'passport';
+import {ExtractJwt, Strategy } from 'passport-jwt';
 
 const myGraphQLSchema = schema;
 const PORT = process.env.port || 3000;
+
+const jwtOptions = {};
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = 'gzarfharharbezullube';
+
+const strategy = new Strategy(jwtOptions, (jwt_payload, next) => {
+  console.log('payload received', jwt_payload);
+  //const user =
+});
+
+
+
+
 
 const server = express();
 // server.use(bodyParser.json());
