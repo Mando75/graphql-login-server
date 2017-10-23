@@ -65,6 +65,15 @@ export async function addUser(data) {
   return newUser;
 }
 
+export async function userLogin(data) {
+  return await UserModel.findOne({unit_id: data.unit_id, i_number: data.i_number}, (err, user) => {
+    if(err)
+      console.log("Error when finding " + data);
+    else
+      return user;
+  });
+}
+
 /**
  * Helper function to generate a unit_id.
  * Uses crypto to generate a random 5 string id
@@ -94,3 +103,4 @@ function checkUnitId(id) {
   });
   return !check;
 }
+

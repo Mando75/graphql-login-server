@@ -1,15 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { graphqlExpress, graphiqlExpress} from 'apollo-server-express';
+import {graphqlExpress, graphiqlExpress} from 'apollo-server-express';
 import {schema} from './server/rootSchema';
 import cors from 'cors';
-import { execute, subscribe } from 'graphql';
-import {createServer } from 'http';
-import {SubscriptionServer } from 'subscriptions-transport-ws';
-import * as _ from 'lodash';
+import {execute, subscribe} from 'graphql';
+import {createServer} from 'http';
+import {SubscriptionServer} from 'subscriptions-transport-ws';
 import * as jwt from 'jsonwebtoken';
-import * as passport from 'passport';
-import {ExtractJwt, Strategy } from 'passport-jwt';
+const passport = require('passport');
+import {ExtractJwt, Strategy} from 'passport-jwt';
+import {userLogin, findUserById} from './server/connectors/userConnector';
 
 const myGraphQLSchema = schema;
 const PORT = process.env.port || 3000;
@@ -18,21 +18,52 @@ const jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = 'gzarfharharbezullube';
 
-const strategy = new Strategy(jwtOptions, (jwt_payload, next) => {
-  console.log('payload received', jwt_payload);
-  //const user =
+const strategy = new Strategy(jwtOptions, async (jwt_payload, next) => {
+  const user = await findUserById(jwt_payload.id);
+  if (user)
+    next(null, user);
+  else
+    next(null, false);
 });
 
 
-
+passport.use(strategy);
 
 
 const server = express();
-// server.use(bodyParser.json());
-// server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended: true}));
+server.use(passport.initialize());
 server.use('*', cors({origin: 'http://localhost:3000'}));
-server.use('/graphql', bodyParser.json(), graphqlExpress({ schema: myGraphQLSchema}));
-server.use('/graphiql', bodyParser.json(), graphiqlExpress({
+server.get('/', (req, res) => {
+  res.json({message: "Server is running"});
+});
+
+server.post('/auth', async (req, res, next) => {
+  if (req.body.unit_id && req.body.password) {
+    const data = {
+      unit_id : req.body.unit_id,
+      i_number : req.body.password
+    };
+    const user = await userLogin(data);
+    if (!user) {
+      res.status(401).json({message: "no such user found"});
+      next();
+    }else if (user.i_number === data.i_number) {
+      const payload = {id: user._id};
+      const token = jwt.sign(payload, jwtOptions.secretOrKey);
+      res.json({message: "ok", token: token});
+    } else {
+      res.status(401).json({message: "passwords did not match"});
+    }
+  } else {
+    res.status(401).json({message: "incorrect login parameters provided"});
+  }
+});
+
+
+server.use('/graphql', passport.authenticate('jwt', {session: false }), bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
+server.use('/graphiql', passport.authenticate('jwt', {session: false}), bodyParser.json(), graphiqlExpress({
   endpointURL: '/graphql',
   subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
 }));
