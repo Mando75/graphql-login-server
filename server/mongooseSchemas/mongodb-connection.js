@@ -7,4 +7,4 @@ mongo.once('open' ,() =>{
   console.log('Connected to MongoDB');
 });
 
-export default Mongoose
+export default Mongoose;

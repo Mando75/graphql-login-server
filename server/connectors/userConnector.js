@@ -65,6 +65,12 @@ export async function addUser(data) {
   return newUser;
 }
 
+
+/**
+ * Used for user authentication.
+ * @param data
+ * @returns {Promise.<*>}
+ */
 export async function userLogin(data) {
   return await UserModel.findOne({unit_id: data.unit_id, i_number: data.i_number}, (err, user) => {
     if(err)
