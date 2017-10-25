@@ -7,8 +7,9 @@ const RoleMap = {
     }
   },
   Mutation: {
-    // TODO Add mutation function
-    //async
+    async add_simulation_role(obj, args) {
+      return await Role.addRole(args);
+    }
   }
 };
 

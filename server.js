@@ -60,7 +60,7 @@ server.post('/auth', async (req, res, next) => {
     }else if (user.i_number === data.i_number) {
       // if data was correct, create a jwt payload
       const payload = {id: user._id};
-      const token = jwt.sign(payload, jwtOptions.secretOrKey);
+      const token = jwt.sign(payload, jwtOptions.secretOrKey, { expiresIn: '14d' });
       res.json({message: "ok", token: token});
     } else {
       res.status(401).json({message: "passwords did not match"});
