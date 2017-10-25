@@ -9,9 +9,7 @@ import roleMap from './roleResolver';
  * @type {{RootQuery: {}}}
  */
 const rootResolver = {
-  RootQuery: {
-
-  }
+  RootQuery: {  }
 };
 
 export const resolvers = merge(rootResolver, userMap, roleMap);

@@ -86,7 +86,7 @@ export async function userLogin(data) {
  * Uses checkUnitId to verify that there are no duplicate ids.
  * @returns {String} - random string of chars used for Unit_id
  */
-function genUnitId() {
+export function genUnitId() {
   const crypto = require('crypto');
   let id;
   do {

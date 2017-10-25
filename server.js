@@ -13,6 +13,8 @@ import * as jwt from 'jsonwebtoken';
 const passport = require('passport');
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import {userLogin, findUserById} from './server/connectors/userConnector';
+import {Router} from "./server/upload";
+
 
 const myGraphQLSchema = schema;
 const PORT = process.env.port || 3000;
@@ -70,11 +72,17 @@ server.post('/auth', async (req, res, next) => {
   }
 });
 
+const auth = passport.authenticate('jwt', {session: false});
+server.use('/csvupload', auth, Router);
 // To remove auth on these endpoints, comment out the 'passport.authenticate('jwt', {session: false})'
-server.use('/graphql', passport.authenticate('jwt', {session: false }), bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
-server.use('/graphiql', passport.authenticate('jwt', {session: false}), bodyParser.json(), graphiqlExpress({
-  endpointURL: '/graphql',
-  subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
+server.use('/graphql',
+     auth,
+    bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
+server.use('/graphiql',
+     auth,
+    bodyParser.json(), graphiqlExpress({
+      endpointURL: '/graphql',
+      subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
 }));
 
 const ws = createServer(server);
