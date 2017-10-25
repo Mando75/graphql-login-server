@@ -9,3 +9,8 @@ export async function getRoles() {
   });
 }
 
+export function addRole(args) {
+  const role = new SimRoleModel({role: args.role});
+  role.save();
+  return role;
+}

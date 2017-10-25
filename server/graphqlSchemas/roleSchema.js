@@ -14,6 +14,6 @@ const RoleSchema = `
   }
   
   extend type Mutation {
-    add_sim_role(role: String!): SimulationRole
+    add_simulation_role(role: String!): SimulationRole
   }`;
 export default RoleSchema;
