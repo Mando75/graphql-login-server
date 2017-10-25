@@ -13,6 +13,8 @@ import * as jwt from 'jsonwebtoken';
 const passport = require('passport');
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import {userLogin, findUserById} from './server/connectors/userConnector';
+const fileUpload = require('express-fileupload');
+
 
 const myGraphQLSchema = schema;
 const PORT = process.env.port || 3000;
@@ -38,6 +40,7 @@ const server = express();
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(passport.initialize());
+server.use(fileUpload);
 server.use('*', cors({origin: 'http://localhost:3000'}));
 server.get('/', (req, res) => {
   res.json({message: "Server is running"});
@@ -71,10 +74,14 @@ server.post('/auth', async (req, res, next) => {
 });
 
 // To remove auth on these endpoints, comment out the 'passport.authenticate('jwt', {session: false})'
-server.use('/graphql', passport.authenticate('jwt', {session: false }), bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
-server.use('/graphiql', passport.authenticate('jwt', {session: false}), bodyParser.json(), graphiqlExpress({
-  endpointURL: '/graphql',
-  subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
+server.use('/graphql',
+    // passport.authenticate('jwt', {session: false }),
+    bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
+server.use('/graphiql',
+    // passport.authenticate('jwt', {session: false}),
+    bodyParser.json(), graphiqlExpress({
+      endpointURL: '/graphql',
+      subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
 }));
 
 const ws = createServer(server);
