@@ -1,6 +1,7 @@
 /**
  * created by Bryan Muller
  */
+//server packages
 import express from 'express';
 import bodyParser from 'body-parser';
 import {graphqlExpress, graphiqlExpress} from 'apollo-server-express';
@@ -9,11 +10,12 @@ import cors from 'cors';
 import {execute, subscribe} from 'graphql';
 import {createServer} from 'http';
 import {SubscriptionServer} from 'subscriptions-transport-ws';
+import {Router} from "./server/upload";
+// auth packages
 import * as jwt from 'jsonwebtoken';
 const passport = require('passport');
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import {userLogin, findUserById} from './server/connectors/userConnector';
-import {Router} from "./server/upload";
 
 
 const myGraphQLSchema = schema;
@@ -33,16 +35,19 @@ const strategy = new Strategy(jwtOptions, async (jwt_payload, next) => {
   else
     next(null, false);
 });
+
 passport.use(strategy);
 
 // start defining middleware
 const server = express();
+
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(passport.initialize());
 server.use('*', cors({origin: 'http://localhost:3000'}));
+server.use('*', cors({origin: 'http://localhost:3001'}));
 server.get('/', (req, res) => {
-  res.json({message: "Server is running"});
+  res.json({message: "Server is running."});
 });
 
 // define the auth endpoint
@@ -54,6 +59,7 @@ server.post('/auth', async (req, res, next) => {
       i_number : req.body.password
     };
 
+    // find user in db
     const user = await userLogin(data);
 
     if (!user) {
@@ -62,6 +68,7 @@ server.post('/auth', async (req, res, next) => {
     }else if (user.i_number === data.i_number) {
       // if data was correct, create a jwt payload
       const payload = {id: user._id};
+      // set a token with 14 day lifespan
       const token = jwt.sign(payload, jwtOptions.secretOrKey, { expiresIn: '14d' });
       res.json({message: "ok", token: token});
     } else {
@@ -72,12 +79,22 @@ server.post('/auth', async (req, res, next) => {
   }
 });
 
+// create auth variable to pass as middleware
 const auth = passport.authenticate('jwt', {session: false});
-server.use('/csvupload', auth, Router);
+
 // To remove auth on these endpoints, comment out the 'passport.authenticate('jwt', {session: false})'
+
+// new student upload point
+server.use('/csvupload',
+    //auth,
+    Router);
+
+// graphql endpoint
 server.use('/graphql',
      auth,
     bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
+
+// for development only
 server.use('/graphiql',
      auth,
     bodyParser.json(), graphiqlExpress({
