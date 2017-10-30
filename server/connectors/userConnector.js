@@ -31,13 +31,13 @@ export async function getUsers() {
  *  A query function used to find user by i-number, takes an
  *  i-number as a parameter, and returns a single db user matching that number
  *  in the form of a Promise
- * @param i_number
+ * @param org_id
  * @returns {Query|*}
  */
-export async function findUserByInumber(i_number) {
-  return await UserModel.findOne({i_number: i_number}, (err, user)=>{
+export async function findUserByOrgId(org_id) {
+  return await UserModel.findOne({org_id: org_id}, (err, user)=>{
     if(err)
-      console.log('Error when finding' + i_number);
+      console.log('Error when finding' + org_id);
     else
       return user;
   });
@@ -49,7 +49,7 @@ export async function findUserByInumber(i_number) {
  *        {
  *          first_name!
  *          last_name!
- *          i_number!
+ *          org_id!
  *          section!
  *          simulation_role
  *          admin
@@ -60,7 +60,7 @@ export async function findUserByInumber(i_number) {
 export async function addUser(data) {
   const unit_id = await genUnitId();
   const newUser = new UserModel({first_name: data.first_name, last_name: data.last_name,
-                   i_number: data.i_number, admin: false, simulation_role: null, section: data.section, unit_id: unit_id});
+                   ord_id: data.ord_id, admin: false, simulation_role: null, section: data.section, unit_id: unit_id});
   newUser.save();
   return newUser;
 }
@@ -72,7 +72,7 @@ export async function addUser(data) {
  * @returns {Promise.<*>}
  */
 export async function userLogin(data) {
-  return await UserModel.findOne({unit_id: data.unit_id, i_number: data.i_number}, (err, user) => {
+  return await UserModel.findOne({unit_id: data.unit_id, org_id: data.org_id}, (err, user) => {
     if(err)
       console.log("Error when finding " + data);
     else

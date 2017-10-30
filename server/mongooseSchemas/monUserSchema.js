@@ -4,10 +4,10 @@ import Mongoose from './mongodb-connection';
  *
  */
 const UserSchema = Mongoose.Schema({
-  id: Mongoose.Schema.Types.ObjectId,
+  _id: Mongoose.Schema.Types.ObjectId,
   first_name: String,
   last_name: String,
-  i_number: String,
+  org_id: String,
   unit_id: String,
   admin: Boolean,
   simulation_role: {type: Mongoose.Schema.Types.ObjectId, ref: 'Role'},

@@ -11,8 +11,11 @@ import {execute, subscribe} from 'graphql';
 import {createServer} from 'http';
 import {SubscriptionServer} from 'subscriptions-transport-ws';
 import {Router} from "./server/upload";
+
+const sanitizedb = require('express-mongo-sanitize');
 // auth packages
 import * as jwt from 'jsonwebtoken';
+
 const passport = require('passport');
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import {userLogin, findUserById} from './server/connectors/userConnector';
@@ -44,6 +47,9 @@ const server = express();
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(passport.initialize());
+server.use(sanitizedb({
+  replaceWith: '_'
+}));
 server.use('*', cors({origin: 'http://localhost:3000'}));
 server.use('*', cors({origin: 'http://localhost:3001'}));
 server.get('/', (req, res) => {
@@ -55,8 +61,8 @@ server.post('/auth', async (req, res, next) => {
   // ensure that proper parameters were provided.
   if (req.body.unit_id && req.body.password) {
     const data = {
-      unit_id : req.body.unit_id,
-      i_number : req.body.password
+      unit_id: req.body.unit_id,
+      password: req.body.password
     };
 
     // find user in db
@@ -65,11 +71,11 @@ server.post('/auth', async (req, res, next) => {
     if (!user) {
       res.status(401).json({message: "no such user found"});
       next();
-    }else if (user.i_number === data.i_number) {
+    } else if (user.org_id === data.password) {
       // if data was correct, create a jwt payload
       const payload = {id: user._id};
       // set a token with 14 day lifespan
-      const token = jwt.sign(payload, jwtOptions.secretOrKey, { expiresIn: '14d' });
+      const token = jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn: '14d'});
       res.json({message: "ok", token: token});
     } else {
       res.status(401).json({message: "passwords did not match"});
@@ -91,16 +97,16 @@ server.use('/csvupload',
 
 // graphql endpoint
 server.use('/graphql',
-     auth,
+    auth,
     bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
 
 // for development only
 server.use('/graphiql',
-     auth,
+    auth,
     bodyParser.json(), graphiqlExpress({
       endpointURL: '/graphql',
       subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
-}));
+    }));
 
 const ws = createServer(server);
 

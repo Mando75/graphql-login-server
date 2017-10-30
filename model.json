@@ -1,0 +1,116 @@
+{
+  "Experiment": {
+    "name": "The Apple Market",
+    "Types": [
+      {
+        "id": "Type A",
+        "distribution": 8,
+        "Sessions": [
+          {
+            "session": 1,
+            "role": "Apple Demander",
+            "value": 40,
+            "rounds": [
+              {
+                "transactions": [
+                  {
+                    "number": 1,
+                    "buyerId": "unit_id here",
+                    "sellerId": "unit_id here",
+                    "sellingPrice": 420
+                  }
+                ]
+              },
+              {
+
+              }
+            ]
+          },
+          {
+            "session": 2,
+            "role": "Apple Supplier",
+            "value": 30
+          }
+        ]
+      },
+      {
+        "id": "Type B",
+        "distribution": 8,
+        "Sessions": [
+          {
+            "session": 1,
+            "role": "Apple Demander",
+            "value": 20
+          },
+          {
+            "session": 2,
+            "role": "Apple Supplier",
+            "value": 10
+          }
+        ]
+      },
+      {
+        "id": "Type C",
+        "distribution": 8,
+        "Sessions": [
+          {
+            "session": 1,
+            "role": "Apple Demander",
+            "value": 20
+          },
+          {
+            "session": 2,
+            "role": "Apple Demander",
+            "value": 40
+          }
+        ]
+      },
+      {
+       "id": "Type D",
+        "distribution": 8,
+        "Sessions": [
+          {
+            "session": 1,
+            "role": "Apple Supplier",
+            "value": 10
+          },{
+            "session": 2,
+            "role": "Apple Demander",
+            "value": 20
+          }
+        ]
+      },
+      {
+        "id": "Type E",
+        "distribution": 8,
+        "Sessions": [
+          {
+            "session": 1,
+            "role": "Apple Supplier",
+            "value": 30
+          },{
+            "session": 2,
+            "role": "Apple Demander",
+            "value": 40
+          }
+        ]
+      },
+      {
+        "id": "Type F",
+        "distribution": 8,
+        "Sessions": [
+          {
+            "session": 1,
+            "role": "Apple Supplier",
+            "value": 10
+          },
+          {
+            "session": 2,
+            "role": "Apple Supplier",
+            "value": 30
+          }
+        ]
+      }
+    ]
+  }
+}

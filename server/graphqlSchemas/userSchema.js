@@ -8,7 +8,7 @@ const UserSchema = `
     _id:  ID!
     first_name: String!
     last_name: String!
-    i_number: String!
+    org_id: String!
     unit_id: String
     admin: Boolean
     simulation_role: String
@@ -18,11 +18,11 @@ const UserSchema = `
   extend type RootQuery {
     users: [User]
     userById(user_id: ID!): User
-    userByInumber(i_number: String!): User
+    userByOrgId(org_id: String!): User
   }
   
   extend type Mutation {
-    addUser(first_name: String!, last_name: String!, i_number: String!, 
+    addUser(first_name: String!, last_name: String!, org_id: String!, 
             admin: Boolean, simulation_role: String, section: String!): User 
   }
   `;
