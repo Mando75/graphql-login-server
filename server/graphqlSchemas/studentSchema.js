@@ -3,28 +3,27 @@
  *  Also includes mutation to add new Users.
  * @type {string}
  */
-const UserSchema = `
-  type User {
+const StudentSchema = `
+  type Student {
     _id:  ID!
     first_name: String!
     last_name: String!
     i_number: String!
     unit_id: String
-    admin: Boolean
     simulation_role: String
     section: String
   }
   
   extend type RootQuery {
-    users: [User]
-    userById(user_id: ID!): User
-    userByInumber(i_number: String!): User
+    students: [Student]
+    studentById(student_id: ID!): Student
+    studentByOrgId(orgId: String!): Student
   }
   
   extend type Mutation {
-    addUser(first_name: String!, last_name: String!, i_number: String!, 
-            admin: Boolean, simulation_role: String, section: String!): User 
+    addStudent(first_name: String!, last_name: String!, orgId: String!, 
+            admin: Boolean, simulation_role: String, section: String!): Student
   }
   `;
 
-export default UserSchema;
+export default StudentSchema;

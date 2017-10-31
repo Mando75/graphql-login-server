@@ -1,13 +1,13 @@
 import express from 'express';
-import {genUnitId} from "./connectors/userConnector";
+import {genUnitId} from "./connectors/studentConnector";
 
 const Multer = require('multer');
-import UserModel from './mongooseSchemas/monUserSchema';
+import StudentModel from './mongooseSchemas/monStudentSchema';
 
 const fs = require('fs');
 const csv = require('fast-csv');
 const upload = Multer({dest: './uploads/'});
-const Router = express.Router();
+const uploadRouter = express.Router();
 
 
 /**
@@ -15,7 +15,7 @@ const Router = express.Router();
  * This endpoint is expecting a form field named students passing through a csv
  * file which will be saved in the user collection.
  */
-Router.post('/', upload.single('students'), (req, res) => {
+uploadRouter.post('/', upload.single('students'), (req, res) => {
   const file = req.file;
   console.log(file.mimetype);
   const stream = fs.createReadStream(file.path);
@@ -47,9 +47,9 @@ Router.post('/', upload.single('students'), (req, res) => {
   });
 });
 
-Router.get('/csvupload', (req, res, next) => {
+uploadRouter.get('/csvupload', (req, res, next) => {
   res.json({message: "cannot get csvupload"});
 });
 
-export {Router};
+export {uploadRouter};
 

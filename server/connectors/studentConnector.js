@@ -3,15 +3,15 @@ import StudentModel from '../mongooseSchemas/monStudentSchema';
 /**
  * A search query for finding users by MongoDb id. Returns
  * a single database object in the form of a Promise.
- * @param user_id
+ * @param student_id
  * @returns {Query}
  */
-export async function findStudentById(user_id) {
-  return await StudentModel.findById(user_id, (err, user)=>{
+export async function findStudentById(student_id) {
+  return await StudentModel.findById(student_id, (err, student)=>{
     if(err)
-      console.log('Error when finding' + user_id);
+      console.log('Error when finding' + student_id);
     else
-      return user;
+      return student;
   });
 }
 
@@ -59,10 +59,10 @@ export async function findStudentByOrgId(orgId) {
  */
 export async function addStudent(data) {
   const unit_id = await genUnitId();
-  const newUser = new UserModel({first_name: data.first_name, last_name: data.last_name,
+  const newStudent = new StudentModel({first_name: data.first_name, last_name: data.last_name,
                    orgId: data.orgId, simulation_role: null, section: data.section, unit_id: unit_id});
-  newUser.save();
-  return newUser;
+  newStudent.save();
+  return newStudent;
 }
 
 
@@ -71,7 +71,7 @@ export async function addStudent(data) {
  * @param data
  * @returns {Promise.<*>}
  */
-export async function userLogin(data) {
+export async function studentLogin(data) {
   return await StudentModel.findOne({unit_id: data.unit_id, orgId: data.orgId}, (err, user) => {
     if(err)
       console.log("Error when finding " + data);

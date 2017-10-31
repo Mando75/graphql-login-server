@@ -8,13 +8,13 @@ import * as Student from "../connectors/studentConnector";
  */
 const studentMap = {
   RootQuery: {
-    async StudentById(obj, args) {
-      return await Student.findStudentById(args.Student_id);
+    async studentById(obj, args) {
+      return await Student.findStudentById(args.student_id);
     },
-    async StudentByInumber(obj, args) {
-      return await Student.findStudentByInumber(args.i_number);
+    async studentByOrgId(obj, args) {
+      return await Student.findStudentByInumber(args.orgId);
     },
-    async Students(obj, args) {
+    async students(obj, args) {
       return await Student.getStudents();
     }
   },
