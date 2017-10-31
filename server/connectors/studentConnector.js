@@ -1,4 +1,4 @@
-import UserModel from '../mongooseSchemas/monUserSchema';
+import StudentModel from '../mongooseSchemas/monStudentSchema';
 
 /**
  * A search query for finding users by MongoDb id. Returns
@@ -6,8 +6,8 @@ import UserModel from '../mongooseSchemas/monUserSchema';
  * @param user_id
  * @returns {Query}
  */
-export async function findUserById(user_id) {
-  return await UserModel.findById(user_id, (err, user)=>{
+export async function findStudentById(user_id) {
+  return await StudentModel.findById(user_id, (err, user)=>{
     if(err)
       console.log('Error when finding' + user_id);
     else
@@ -18,8 +18,8 @@ export async function findUserById(user_id) {
 /**
  *  Function that returns a list of all users in the db in the form of a Promise
  */
-export async function getUsers() {
-  return await UserModel.find((err, users)=> {
+export async function getStudents() {
+  return await StudentModel.find((err, users)=> {
     if(err)
       console.log('Error when finding users');
     else
@@ -34,10 +34,10 @@ export async function getUsers() {
  * @param i_number
  * @returns {Query|*}
  */
-export async function findUserByInumber(i_number) {
-  return await UserModel.findOne({i_number: i_number}, (err, user)=>{
+export async function findStudentByOrgId(orgId) {
+  return await StudentModel.findOne({orgId: orgId}, (err, user)=>{
     if(err)
-      console.log('Error when finding' + i_number);
+      console.log('Error when finding' + orgId);
     else
       return user;
   });
@@ -57,10 +57,10 @@ export async function findUserByInumber(i_number) {
  * @param data
  * @returns {Promise.<void>}
  */
-export async function addUser(data) {
+export async function addStudent(data) {
   const unit_id = await genUnitId();
   const newUser = new UserModel({first_name: data.first_name, last_name: data.last_name,
-                   i_number: data.i_number, admin: false, simulation_role: null, section: data.section, unit_id: unit_id});
+                   orgId: data.orgId, simulation_role: null, section: data.section, unit_id: unit_id});
   newUser.save();
   return newUser;
 }
@@ -72,7 +72,7 @@ export async function addUser(data) {
  * @returns {Promise.<*>}
  */
 export async function userLogin(data) {
-  return await UserModel.findOne({unit_id: data.unit_id, i_number: data.i_number}, (err, user) => {
+  return await StudentModel.findOne({unit_id: data.unit_id, orgId: data.orgId}, (err, user) => {
     if(err)
       console.log("Error when finding " + data);
     else
@@ -101,7 +101,7 @@ export function genUnitId() {
  * @returns {boolean}
  */
 function checkUnitId(id) {
-  const check = UserModel.findOne({unit_id: id}, (err, user)=> {
+  const check = StudentModel.findOne({unit_id: id}, (err, user)=> {
     if(err)
       console.log('Error when checking' + id);
     else

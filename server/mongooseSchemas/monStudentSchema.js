@@ -3,7 +3,7 @@ import Mongoose from './mongodb-connection';
 /**
  *
  */
-const UserSchema = Mongoose.Schema({
+const StudentSchema = Mongoose.Schema({
   id: Mongoose.Schema.Types.ObjectId,
   first_name: String,
   last_name: String,
@@ -14,6 +14,6 @@ const UserSchema = Mongoose.Schema({
   section: String
 }, {collection: "Users"});
 
-const UserModel = Mongoose.model('User', UserSchema);
+const StudentModel = Mongoose.model('Student', StudentSchema);
 
-export default UserModel;
+export default StudentModel;
