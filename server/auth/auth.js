@@ -39,11 +39,15 @@ authRouter.post('/auth', async (req, res, next) => {
       next();
     } else if (user.orgId === data.password) {
       // if data was correct, create a jwt payload
-      const payload = {user: user};
+      const payload = {
+        _id: user._id,
+        unit_id: user.unit_id,
+        type: user.type
+      };
       // set a token with 14 day lifespan
       const token = jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn: '14d'});
       res.json({message: "ok", token: token, user: user});
-      saveAuth(token, user.type, user._id);
+      await saveAuth(token, user.type, user._id);
       next();
     } else {
       res.status(401).json({message: "passwords did not match"});
