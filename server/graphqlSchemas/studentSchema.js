@@ -8,10 +8,11 @@ const StudentSchema = `
     _id:  ID!
     first_name: String!
     last_name: String!
-    i_number: String!
+    orgId: String!
     unit_id: String
     simulation_role: String
     section: String
+    authToken: String
   }
   
   extend type RootQuery {

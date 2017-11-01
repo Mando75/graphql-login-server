@@ -11,8 +11,10 @@ const StudentSchema = Mongoose.Schema({
   unit_id: String,
   admin: Boolean,
   simulation_role: {type: Mongoose.Schema.Types.ObjectId, ref: 'Role'},
-  section: String
-}, {collection: "Users"});
+  section: String,
+  authToken: String,
+  type: String
+}, {collection: "Students"});
 
 const StudentModel = Mongoose.model('Student', StudentSchema);
 

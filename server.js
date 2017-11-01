@@ -15,8 +15,9 @@ const myGraphQLSchema = schema;
 const PORT = process.env.port || 3000;
 const passport = require('passport');
 // auth packages
-import {strategy} from "./server/auth";
-import authRouter from './server/auth';
+import {strategy, authRouter} from "./server/auth/auth";
+import {checkAuthRouter} from "./server/auth/checkauth";
+
 passport.use(strategy);
 
 // start defining middleware
@@ -36,6 +37,10 @@ server.use(authRouter);
 const auth = passport.authenticate('jwt', {session: false});
 
 // To remove auth on these endpoints, comment out the 'passport.authenticate('jwt', {session: false})'
+
+server.use('/checkauth',
+    auth,
+    checkAuthRouter);
 
 // new student upload point
 server.use('/csvupload',

@@ -60,7 +60,7 @@ export async function findStudentByOrgId(orgId) {
 export async function addStudent(data) {
   const unit_id = await genUnitId();
   const newStudent = new StudentModel({first_name: data.first_name, last_name: data.last_name,
-                   orgId: data.orgId, simulation_role: null, section: data.section, unit_id: unit_id});
+                   orgId: data.orgId, simulation_role: null, section: data.section, unit_id: unit_id, type: 'student'});
   newStudent.save();
   return newStudent;
 }
@@ -72,7 +72,7 @@ export async function addStudent(data) {
  * @returns {Promise.<*>}
  */
 export async function studentLogin(data) {
-  return await StudentModel.findOne({unit_id: data.unit_id, orgId: data.orgId}, (err, user) => {
+  return await StudentModel.findOne({unit_id: data.unit_id, orgId: data.password}, (err, user) => {
     if(err)
       console.log("Error when finding " + data);
     else
@@ -110,3 +110,17 @@ function checkUnitId(id) {
   return !check;
 }
 
+export async function saveStudentToken(student_id, token) {
+  console.log(student_id, token);
+  return await StudentModel.update({_id: student_id}, {authToken: token}, {upsert: false});
+}
+
+
+export async function findStudentByAuth(token) {
+  return await StudentModel.findOne({authToken: token}, (err, user) => {
+    if (err)
+      console.log("Error when finding" + user);
+    else
+      return user;
+  })
+}
