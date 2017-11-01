@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import userMap from './userResolver';
+import studentMap from './studentResolver';
 import roleMap from './roleResolver';
 
 /**
@@ -12,4 +12,4 @@ const rootResolver = {
   RootQuery: {  }
 };
 
-export const resolvers = merge(rootResolver, userMap, roleMap);
+export const resolvers = merge(rootResolver, studentMap, roleMap);

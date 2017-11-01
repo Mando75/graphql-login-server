@@ -3,17 +3,19 @@ import Mongoose from './mongodb-connection';
 /**
  *
  */
-const UserSchema = Mongoose.Schema({
+const StudentSchema = Mongoose.Schema({
   id: Mongoose.Schema.Types.ObjectId,
   first_name: String,
   last_name: String,
-  i_number: String,
+  orgId: String,
   unit_id: String,
   admin: Boolean,
   simulation_role: {type: Mongoose.Schema.Types.ObjectId, ref: 'Role'},
-  section: String
-}, {collection: "Users"});
+  section: String,
+  authToken: String,
+  type: String
+}, {collection: "Students"});
 
-const UserModel = Mongoose.model('User', UserSchema);
+const StudentModel = Mongoose.model('Student', StudentSchema);
 
-export default UserModel;
+export default StudentModel;
