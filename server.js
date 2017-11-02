@@ -17,6 +17,7 @@ const passport = require('passport');
 // auth packages
 import {strategy, authRouter} from "./server/auth/auth";
 import {checkAuthRouter} from "./server/auth/checkauth";
+import {decodeJWT} from "./server/auth/authHelpers";
 
 passport.use(strategy);
 
@@ -26,6 +27,7 @@ const server = express();
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(passport.initialize());
+server.use(decodeJWT);
 server.use('*', cors({origin: 'http://localhost:3000'}));
 server.use('*', cors({origin: 'http://localhost:3001'}));
 server.get('/', (req, res) => {

@@ -4,7 +4,7 @@ import Mongoose from './mongodb-connection';
  *
  */
 const StudentSchema = Mongoose.Schema({
-  id: Mongoose.Schema.Types.ObjectId,
+  _id: Mongoose.Schema.Types.ObjectId,
   first_name: String,
   last_name: String,
   orgId: String,

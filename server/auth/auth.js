@@ -11,8 +11,8 @@ jwtOptions.secretOrKey = 'gzarfharharbezullube'; // This is a present from Mohon
 
 // create passport.js strategy
 export const strategy = new Strategy(jwtOptions, async (jwt_payload, next) => {
-  if (jwt_payload.user)
-    next(null, jwt_payload.user);
+  if (jwt_payload._id)
+    next(null, jwt_payload._id);
   else
     next(null, false);
 });
@@ -32,13 +32,16 @@ authRouter.post('/auth', async (req, res, next) => {
       type: req.body.type
     };
 
-    const user = await findUser(data);
-
+    let user = await findUser(data);
+    const userpass = user.orgId || user.password;
     if (!user) {
       res.status(401).json({message: "no such user found"});
       next();
-    } else if (user.orgId === data.password) {
+      //TODO this needs to be adjusted for teacher login
+    } else if (userpass === data.password) {
       // if data was correct, create a jwt payload
+      delete user.password;
+      delete user.orgId;
       const payload = {
         _id: user._id,
         unit_id: user.unit_id,

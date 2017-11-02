@@ -29,6 +29,9 @@ export async function saveAuth(token, type, user_id) {
   }
 }
 
-export async function findUserFromAuth(token) {
-  return await findStudentByAuth(token) || await findTeacherByAuth(token);
+import jwt_decode from 'jwt-decode'
+export function decodeJWT(req, res, next) {
+  const payload = jwt_decode(req.headers.authorization.split('Bearer ')[1]);
+  req.authpayload = payload;
+  next();
 }
