@@ -27,14 +27,14 @@ const server = express();
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(passport.initialize());
-server.use(decodeJWT);
+
 server.use('*', cors({origin: 'http://localhost:3000'}));
 server.use('*', cors({origin: 'http://localhost:3001'}));
 server.get('/', (req, res) => {
   res.json({message: "Server is running."});
 });
 server.use(authRouter);
-
+server.use(decodeJWT);
 // create auth variable to pass as middleware
 const auth = passport.authenticate('jwt', {session: false});
 
