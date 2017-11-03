@@ -17,7 +17,7 @@ const passport = require('passport');
 // auth packages
 import {strategy, authRouter} from "./server/auth/auth";
 import {checkAuthRouter} from "./server/auth/checkauth";
-import {decodeJWT} from "./server/auth/authHelpers";
+import {decodeJWT, verifyTeacher} from "./server/auth/authHelpers";
 
 passport.use(strategy);
 
@@ -61,7 +61,8 @@ server.use('/graphiql',
 
 // new student upload point
 server.use('/csvupload',
-    //auth,
+    auth,
+    verifyTeacher,
     uploadRouter);
 
 

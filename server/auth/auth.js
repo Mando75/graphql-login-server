@@ -6,7 +6,11 @@ import {findUser, saveAuth} from './authHelpers';
 // define auth options
 export const jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-jwtOptions.secretOrKey = 'gzarfharharbezullube'; // This is a present from Mohonri
+jwtOptions.secretOrKey = `T25jZXVwb25hdGltZW1vaG9ucmlhbmRicnlhbmRlY2lk
+                          ZWR0b21ha2V0aGVpcm93bmZyZWVsYW5jZWRldmVsb3Bt
+                          ZW50Y29tcGFueWl0d2FzcHJldHR5c2lja2FuZG5vd3Ro
+                          ZXlhcmVnb2luZ3RvcnVsZXRoZXdvcmxk`;
+
 
 
 // create passport.js strategy
