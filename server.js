@@ -36,10 +36,10 @@ server.get('/', (req, res) => {
   res.json({message: "Server is running."});
 });
 server.use(authRouter);
-server.use(decodeJWT);
+
 // create auth variable to pass as middleware
 const auth = passport.authenticate('jwt', {session: false});
-
+server.use(decodeJWT);
 // To remove auth on these endpoints, comment out the 'passport.authenticate('jwt', {session: false})'
 
 server.use('/checkauth',
