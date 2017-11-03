@@ -17,6 +17,7 @@ const passport = require('passport');
 // auth packages
 import {strategy, authRouter} from "./server/auth/auth";
 import {checkAuthRouter} from "./server/auth/checkauth";
+import {decodeJWT, verifyTeacher} from "./server/auth/authHelpers";
 
 passport.use(strategy);
 
@@ -26,8 +27,11 @@ const server = express();
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(passport.initialize());
+
 server.use('*', cors({origin: 'http://localhost:3000'}));
 server.use('*', cors({origin: 'http://localhost:3001'}));
+
+
 server.get('/', (req, res) => {
   res.json({message: "Server is running."});
 });
@@ -35,17 +39,12 @@ server.use(authRouter);
 
 // create auth variable to pass as middleware
 const auth = passport.authenticate('jwt', {session: false});
-
+server.use(decodeJWT);
 // To remove auth on these endpoints, comment out the 'passport.authenticate('jwt', {session: false})'
 
 server.use('/checkauth',
     auth,
     checkAuthRouter);
-
-// new student upload point
-server.use('/csvupload',
-    //auth,
-    uploadRouter);
 
 // graphql endpoint
 server.use('/graphql',
@@ -59,6 +58,13 @@ server.use('/graphiql',
       endpointURL: '/graphql',
       subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
 }));
+
+// new student upload point
+server.use('/csvupload',
+    auth,
+    verifyTeacher,
+    uploadRouter);
+
 
 const ws = createServer(server);
 

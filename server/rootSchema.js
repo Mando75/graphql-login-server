@@ -4,7 +4,6 @@
 
 import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
 import StudentSchema from './graphqlSchemas/studentSchema';
-import RoleSchema from './graphqlSchemas/roleSchema';
 import { resolvers } from './resolvers/rootResolver';
 
 const RootQuery = `
@@ -27,7 +26,7 @@ const schemaDef = `
  * Pass makeExecutableSchema an array of type definitions
  * and resolvers.
  */
-const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, StudentSchema, RoleSchema],
+const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, StudentSchema],
                                       resolvers: resolvers});
 
 

@@ -10,9 +10,9 @@ const StudentSchema = `
     last_name: String!
     orgId: String!
     unit_id: String
-    simulation_role: String
     section: String
     authToken: String
+    type: String
   }
   
   extend type RootQuery {
@@ -22,8 +22,8 @@ const StudentSchema = `
   }
   
   extend type Mutation {
-    addStudent(first_name: String!, last_name: String!, orgId: String!, 
-            admin: Boolean, simulation_role: String, section: String!): Student
+    addStudent(first_name: String!, last_name: String!, orgId: String!,
+          section: String!): Student
   }
   `;
 

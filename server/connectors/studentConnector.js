@@ -7,8 +7,8 @@ import StudentModel from '../mongooseSchemas/monStudentSchema';
  * @returns {Query}
  */
 export async function findStudentById(student_id) {
-  return await StudentModel.findById(student_id, (err, student)=>{
-    if(err)
+  return await StudentModel.findById(student_id, (err, student) => {
+    if (err)
       console.log('Error when finding' + student_id);
     else
       return student;
@@ -19,8 +19,8 @@ export async function findStudentById(student_id) {
  *  Function that returns a list of all users in the db in the form of a Promise
  */
 export async function getStudents() {
-  return await StudentModel.find((err, users)=> {
-    if(err)
+  return await StudentModel.find((err, users) => {
+    if (err)
       console.log('Error when finding users');
     else
       return users;
@@ -35,8 +35,8 @@ export async function getStudents() {
  * @returns {Query|*}
  */
 export async function findStudentByOrgId(orgId) {
-  return await StudentModel.findOne({orgId: orgId}, (err, user)=>{
-    if(err)
+  return await StudentModel.findOne({orgId: orgId}, (err, user) => {
+    if (err)
       console.log('Error when finding' + orgId);
     else
       return user;
@@ -59,8 +59,10 @@ export async function findStudentByOrgId(orgId) {
  */
 export async function addStudent(data) {
   const unit_id = await genUnitId();
-  const newStudent = new StudentModel({first_name: data.first_name, last_name: data.last_name,
-                   orgId: data.orgId, simulation_role: null, section: data.section, unit_id: unit_id, type: 'student'});
+  const newStudent = new StudentModel({
+    first_name: data.first_name, last_name: data.last_name,
+    orgId: data.orgId,section: data.section, unit_id: unit_id, type: 'student'
+  });
   newStudent.save();
   return newStudent;
 }
@@ -72,8 +74,8 @@ export async function addStudent(data) {
  * @returns {Promise.<*>}
  */
 export async function studentLogin(data) {
-  return await StudentModel.findOne({unit_id: data.unit_id, orgId: data.password}, (err, user) => {
-    if(err)
+  return await StudentModel.findOne({unit_id: data.unit_id},'_id first_name last_name section type orgId' ,(err, user) => {
+    if (err)
       console.log("Error when finding " + data);
     else
       return user;
@@ -90,7 +92,7 @@ export function genUnitId() {
   const crypto = require('crypto');
   let id;
   do {
-    id = crypto.randomBytes(5).toString('hex').slice(0,5).toUpperCase();
+    id = crypto.randomBytes(5).toString('hex').slice(0, 5).toUpperCase();
   } while (checkUnitId(id));
   return id;
 }
@@ -101,8 +103,8 @@ export function genUnitId() {
  * @returns {boolean}
  */
 function checkUnitId(id) {
-  const check = StudentModel.findOne({unit_id: id}, (err, user)=> {
-    if(err)
+  const check = StudentModel.findOne({unit_id: id}, (err, user) => {
+    if (err)
       console.log('Error when checking' + id);
     else
       return user;
@@ -111,15 +113,16 @@ function checkUnitId(id) {
 }
 
 export async function saveStudentToken(student_id, token) {
-  console.log(student_id, token);
   return await StudentModel.update({_id: student_id}, {authToken: token}, {upsert: false});
 }
 
 
-export async function findStudentByAuth(token) {
-  return await StudentModel.findOne({authToken: token}, (err, user) => {
-    if (err)
+export async function findStudentAuth(student_id) {
+  return await StudentModel.findById(student_id, '_id first_name last_name type unit_id', (err, user) => {
+    if (err) {
       console.log("Error when finding" + user);
+      return null;
+    }
     else
       return user;
   })

@@ -29,6 +29,24 @@ export async function saveAuth(token, type, user_id) {
   }
 }
 
-export async function findUserFromAuth(token) {
-  return await findStudentByAuth(token) || await findTeacherByAuth(token);
+import jwt_decode from 'jwt-decode'
+export function decodeJWT(req, res, next) {
+  if (req.headers.authorization) {
+    const payload = jwt_decode(req.headers.authorization.split('Bearer ')[1]);
+    req.authpayload = payload;
+    return next();
+  } else {
+    console.log('No JWT detected');
+    return next();
+  }
+}
+
+
+export function verifyTeacher(req, res, next) {
+  const type = req.authpayload.type;
+  if (type === 'teacher') {
+    return next();
+  } else {
+    res.status(403).json({message: "You are not authorized to view this page"}).end();
+  }
 }
