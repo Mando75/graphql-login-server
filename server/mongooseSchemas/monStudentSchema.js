@@ -9,8 +9,6 @@ const StudentSchema = Mongoose.Schema({
   last_name: String,
   orgId: String,
   unit_id: String,
-  admin: Boolean,
-  simulation_role: {type: Mongoose.Schema.Types.ObjectId, ref: 'Role'},
   section: String,
   authToken: String,
   type: String

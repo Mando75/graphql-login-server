@@ -12,9 +12,9 @@ jwtOptions.secretOrKey = 'gzarfharharbezullube'; // This is a present from Mohon
 // create passport.js strategy
 export const strategy = new Strategy(jwtOptions, async (jwt_payload, next) => {
   if (jwt_payload._id)
-    next(null, jwt_payload._id);
+    return next(null, jwt_payload._id);
   else
-    next(null, false);
+    return next(null, false);
 });
 
 
@@ -25,7 +25,7 @@ const authRouter = express.Router();
 // define the auth endpoint
 authRouter.post('/auth', async (req, res, next) => {
   // ensure that proper parameters were provided.
-  if (req.body.unit_id && req.body.password) {
+  if (req.body.unit_id && req.body.password && req.body.type) {
     const data = {
       unit_id: req.body.unit_id,
       password: req.body.password,
@@ -36,8 +36,7 @@ authRouter.post('/auth', async (req, res, next) => {
     const userpass = user.orgId || user.password;
     if (!user) {
       res.status(401).json({message: "no such user found"});
-      next();
-      //TODO this needs to be adjusted for teacher login
+      return next();
     } else if (userpass === data.password) {
       // if data was correct, create a jwt payload
       delete user.password;
@@ -51,14 +50,14 @@ authRouter.post('/auth', async (req, res, next) => {
       const token = jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn: '14d'});
       res.json({message: "ok", token: token, user: user});
       await saveAuth(token, user.type, user._id);
-      next();
+      return next();
     } else {
       res.status(401).json({message: "passwords did not match"});
-      next();
+      return next();
     }
   } else {
     res.status(401).json({message: "incorrect login parameters provided"});
-    next();
+    return next();
   }
 });
 

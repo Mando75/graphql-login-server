@@ -30,6 +30,8 @@ server.use(passport.initialize());
 server.use(decodeJWT);
 server.use('*', cors({origin: 'http://localhost:3000'}));
 server.use('*', cors({origin: 'http://localhost:3001'}));
+
+
 server.get('/', (req, res) => {
   res.json({message: "Server is running."});
 });
@@ -44,11 +46,6 @@ server.use('/checkauth',
     auth,
     checkAuthRouter);
 
-// new student upload point
-server.use('/csvupload',
-    //auth,
-    uploadRouter);
-
 // graphql endpoint
 server.use('/graphql',
      //auth,
@@ -61,6 +58,12 @@ server.use('/graphiql',
       endpointURL: '/graphql',
       subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`
 }));
+
+// new student upload point
+server.use('/csvupload',
+    //auth,
+    uploadRouter);
+
 
 const ws = createServer(server);
 
