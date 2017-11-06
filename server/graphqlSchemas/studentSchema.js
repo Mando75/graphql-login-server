@@ -8,7 +8,6 @@ const StudentSchema = `
     _id:  ID!
     first_name: String!
     last_name: String!
-    orgId: String!
     unit_id: String
     section: String
     authToken: String
@@ -18,7 +17,7 @@ const StudentSchema = `
   extend type RootQuery {
     students: [Student]
     studentById(student_id: ID!): Student
-    studentByOrgId(orgId: String!): Student
+    studentByUnitId(unit_id: String!): Student
   }
   
   extend type Mutation {

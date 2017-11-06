@@ -8,8 +8,10 @@ import StudentModel from '../mongooseSchemas/monStudentSchema';
  */
 export async function findStudentById(student_id) {
   return await StudentModel.findById(student_id, (err, student) => {
-    if (err)
+    if (err) {
       console.log('Error when finding' + student_id);
+      return err;
+    }
     else
       return student;
   });
@@ -20,9 +22,10 @@ export async function findStudentById(student_id) {
  */
 export async function getStudents() {
   return await StudentModel.find((err, users) => {
-    if (err)
+    if (err) {
       console.log('Error when finding users');
-    else
+      return err;
+    } else
       return users;
   });
 }
@@ -34,11 +37,12 @@ export async function getStudents() {
  * @param i_number
  * @returns {Query|*}
  */
-export async function findStudentByOrgId(orgId) {
-  return await StudentModel.findOne({orgId: orgId}, (err, user) => {
-    if (err)
-      console.log('Error when finding' + orgId);
-    else
+export async function findStudentByUnitId(unit_id) {
+  return await StudentModel.findOne({unit_id: unit_id}, (err, user) => {
+    if (err) {
+      console.log('Error when finding' + unit_id);
+      return err;
+    } else
       return user;
   });
 }
@@ -61,7 +65,7 @@ export async function addStudent(data) {
   const unit_id = await genUnitId();
   const newStudent = new StudentModel({
     first_name: data.first_name, last_name: data.last_name,
-    orgId: data.orgId,section: data.section, unit_id: unit_id, type: 'student'
+    orgId: data.orgId, section: data.section, unit_id: unit_id, type: 'student'
   });
   newStudent.save();
   return newStudent;
@@ -74,10 +78,11 @@ export async function addStudent(data) {
  * @returns {Promise.<*>}
  */
 export async function studentLogin(data) {
-  return await StudentModel.findOne({unit_id: data.unit_id},'_id first_name last_name section type orgId' ,(err, user) => {
-    if (err)
+  return await StudentModel.findOne({unit_id: data.unit_id}, '_id first_name last_name section type orgId', (err, user) => {
+    if (err) {
       console.log("Error when finding " + data);
-    else
+      return err;
+    } else
       return user;
   });
 }
@@ -104,19 +109,32 @@ export function genUnitId() {
  */
 function checkUnitId(id) {
   const check = StudentModel.findOne({unit_id: id}, (err, user) => {
-    if (err)
+    if (err) {
       console.log('Error when checking' + id);
+      return err;
+    }
     else
       return user;
   });
   return !check;
 }
 
+/**
+ * saves auth token to user object in Mongo
+ * @param student_id
+ * @param token
+ * @returns {Promise.<*>}
+ */
 export async function saveStudentToken(student_id, token) {
   return await StudentModel.update({_id: student_id}, {authToken: token}, {upsert: false});
 }
 
-
+/**
+ * used for verifying a token payload. Returns just the items needed in the
+ * payload.
+ * @param student_id
+ * @returns {Promise.<*>}
+ */
 export async function findStudentAuth(student_id) {
   return await StudentModel.findById(student_id, '_id first_name last_name type unit_id', (err, user) => {
     if (err) {

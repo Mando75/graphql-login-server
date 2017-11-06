@@ -3,6 +3,10 @@ const checkAuthRouter = express.Router();
 import {findStudentAuth} from "../connectors/studentConnector";
 import {findTeacherAuth} from "../connectors/teacherConnector";
 
+/**
+ * checkauth endpoint is used to verify an existing token without
+ * going through the login process again.
+ */
 checkAuthRouter.post('/', async (req, res, next) => {
   const payload = req.authpayload;
   let user;
@@ -20,7 +24,7 @@ checkAuthRouter.post('/', async (req, res, next) => {
   if(user)
     res.json({user: user});
   else
-    res.status(404).json({message: "User not found"});
+    res.status(401).json({message: "User not found"});
 });
 
 export {checkAuthRouter};
