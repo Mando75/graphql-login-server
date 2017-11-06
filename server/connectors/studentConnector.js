@@ -119,11 +119,22 @@ function checkUnitId(id) {
   return !check;
 }
 
+/**
+ * saves auth token to user object in Mongo
+ * @param student_id
+ * @param token
+ * @returns {Promise.<*>}
+ */
 export async function saveStudentToken(student_id, token) {
   return await StudentModel.update({_id: student_id}, {authToken: token}, {upsert: false});
 }
 
-
+/**
+ * used for verifying a token payload. Returns just the items needed in the
+ * payload.
+ * @param student_id
+ * @returns {Promise.<*>}
+ */
 export async function findStudentAuth(student_id) {
   return await StudentModel.findById(student_id, '_id first_name last_name type unit_id', (err, user) => {
     if (err) {
