@@ -1,6 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import {ExtractJwt, Strategy} from 'passport-jwt';
 import {findUser, saveAuth} from './authHelpers';
+import bcrypt from 'bcrypt'
 
 
 // define auth options
@@ -47,7 +48,7 @@ authRouter.post('/auth', async (req, res, next) => {
     if (!user) {
       res.status(401).json({message: "no such user found"});
       return next();
-    } else if (userpass === data.password) {
+    } else if (userpass === data.password || await bcrypt.compare(data.password, userpass)) {
       // if data was correct, create a jwt payload
       delete user.password; // remove sensitive data from payload
       delete user.orgId;
