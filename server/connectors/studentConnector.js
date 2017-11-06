@@ -78,7 +78,7 @@ export async function addStudent(data) {
  * @returns {Promise.<*>}
  */
 export async function studentLogin(data) {
-  return await StudentModel.findOne({unit_id: data.unit_id}, '_id first_name last_name section type orgId', (err, user) => {
+  return await StudentModel.findOne({unit_id: data.unit_id}, '_id first_name last_name section type', (err, user) => {
     if (err) {
       console.log("Error when finding " + data);
       return err;
@@ -136,7 +136,7 @@ export async function saveStudentToken(student_id, token) {
  * @returns {Promise.<*>}
  */
 export async function findStudentAuth(student_id) {
-  return await StudentModel.findById(student_id, '_id first_name last_name type unit_id', (err, user) => {
+  return await StudentModel.findById(student_id, '_id first_name last_name section type', (err, user) => {
     if (err) {
       console.log("Error when finding" + user);
       return null;
