@@ -12,7 +12,6 @@ jwtOptions.secretOrKey = `T25jZXVwb25hdGltZW1vaG9ucmlhbmRicnlhbmRlY2lk
                           ZXlhcmVnb2luZ3RvcnVsZXRoZXdvcmxk`;
 
 
-
 // create passport.js strategy
 export const strategy = new Strategy(jwtOptions, async (jwt_payload, next) => {
   if (jwt_payload._id)
@@ -21,7 +20,10 @@ export const strategy = new Strategy(jwtOptions, async (jwt_payload, next) => {
     return next(null, false);
 });
 
-
+/**
+ * Authentication endpoint
+ * Requires a unit_id, password, and type in the body
+ */
 import express from 'express';
 
 const authRouter = express.Router();
@@ -36,14 +38,18 @@ authRouter.post('/auth', async (req, res, next) => {
       type: req.body.type
     };
 
+    // async call to find user based on login information
     let user = await findUser(data);
+    // password is stored one of two ways, as the orgId, or the password.
+    // this grabs the correct one agnostically.
     const userpass = user.orgId || user.password;
+
     if (!user) {
       res.status(401).json({message: "no such user found"});
       return next();
     } else if (userpass === data.password) {
       // if data was correct, create a jwt payload
-      delete user.password;
+      delete user.password; // remove sensitive data from payload
       delete user.orgId;
       const payload = {
         _id: user._id,
@@ -52,7 +58,8 @@ authRouter.post('/auth', async (req, res, next) => {
       };
       // set a token with 14 day lifespan
       const token = jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn: '14d'});
-      res.json({message: "ok", token: token, user: user});
+      res.json({message: "Authenticated", token: token, user: user});
+      // save token to the db
       await saveAuth(token, user.type, user._id);
       return next();
     } else {

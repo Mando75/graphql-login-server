@@ -11,8 +11,8 @@ const studentMap = {
     async studentById(obj, args) {
       return await Student.findStudentById(args.student_id);
     },
-    async studentByOrgId(obj, args) {
-      return await Student.findStudentByInumber(args.orgId);
+    async studentByUnitId(obj, args) {
+      return await Student.findStudentByUnitId(args.unit_id);
     },
     async students(obj, args) {
       return await Student.getStudents();
