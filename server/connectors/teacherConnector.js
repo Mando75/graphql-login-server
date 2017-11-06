@@ -1,4 +1,33 @@
 import TeacherModel from '../mongooseSchemas/monTeacherSchema';
+import bcrypt from 'bcrypt';
+
+export async function getTeachers() {
+  return await TeacherModel.find((err, teachers) => {
+    if (err) {
+      console.log('Error when finding users');
+      return err;
+    } else
+      return teachers;
+  })
+}
+
+/**
+ * add teacher to the db.
+ * Data object must contain
+ * @param data
+ * @returns {Promise.<void>}
+ */
+export async function addTeacher(data) {
+  const salt = await bcrypt.genSalt(5);
+  const password = await  bcrypt.hash(data.password, salt);
+  const newTeacher = new TeacherModel({
+    first_name: data.first_name, last_name: data.last_name,
+    email: data.email, password: password, sections: data.sections,
+    type: "teacher"
+  });
+  newTeacher.save();
+  return newTeacher;
+}
 
 /**
  * Used for an initial teacher login

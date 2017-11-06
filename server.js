@@ -34,6 +34,7 @@ server.use('*', cors({origin: 'http://localhost:3001'}));
 server.get('/', (req, res) => {
   res.json({message: "Server is running."});
 });
+
 server.use(authRouter);
 
 // create auth variable to pass as middleware
@@ -47,12 +48,12 @@ server.use('/checkauth',
 
 // graphql endpoint
 server.use('/graphql',
-     //auth,
+    //auth,
     bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
 
 // for development only
 server.use('/graphiql',
-     //auth,
+    //auth,
     bodyParser.json(), graphiqlExpress({
       endpointURL: '/graphql',
       subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`

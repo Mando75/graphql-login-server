@@ -67,7 +67,6 @@ export function decodeJWT(req, res, next) {
       res.status(401).json({message: "Error when decoding Auth Token", error: e}).end();
     }
   } else {
-    console.log('No JWT detected');
     return next();
   }
 }
