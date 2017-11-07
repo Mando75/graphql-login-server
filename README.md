@@ -1,1 +1,1 @@
-# econ-sim
+# GraphQL login server
