@@ -22,7 +22,7 @@ export async function findUser(data) {
       return await studentLogin(data);
       break;
     default:
-      return null;
+      return {};
       break;
   }
 }

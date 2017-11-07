@@ -81,7 +81,7 @@ export async function studentLogin(data) {
   return await StudentModel.findOne({unit_id: data.unit_id}, '_id first_name last_name section type orgId', (err, user) => {
     if (err) {
       console.log("Error when finding " + data);
-      return err;
+      return {};
     } else
       return user;
   });

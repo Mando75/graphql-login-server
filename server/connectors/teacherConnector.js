@@ -36,8 +36,10 @@ export async function addTeacher(data) {
  */
 export async function teacherLogin(data) {
   return await TeacherModel.findOne({email: data.unit_id}, (err, user) => {
-    if (err)
+    if (err) {
       console.log("Error when finding " + data);
+      return {};
+    }
     else
       return user;
   });
