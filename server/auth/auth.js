@@ -40,7 +40,7 @@ authRouter.post('/auth', async (req, res, next) => {
     };
 
     // async call to find user based on login information
-    let user = await findUser(data);
+    const user = await findUser(data);
     // password is stored one of two ways, as the orgId, or the password.
     // this grabs the correct one agnostically.
     const userpass = user.orgId || user.password;
@@ -50,8 +50,6 @@ authRouter.post('/auth', async (req, res, next) => {
       return next();
     } else if (userpass === data.password || await bcrypt.compare(data.password, userpass)) {
       // if data was correct, create a jwt payload
-      delete user.password; // remove sensitive data from payload
-      delete user.orgId;
       const payload = {
         _id: user._id,
         unit_id: user.unit_id,
@@ -59,7 +57,15 @@ authRouter.post('/auth', async (req, res, next) => {
       };
       // set a token with 14 day lifespan
       const token = jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn: '14d'});
-      res.json({message: "Authenticated", token: token, user: user});
+
+      // define payload to send to user
+      const userPayload = {
+        _id: user._id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        type: user.type
+      };
+      res.json({message: "Authenticated", token: token, user: userPayload});
       // save token to the db
       await saveAuth(token, user.type, user._id);
       return next();

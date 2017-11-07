@@ -11,6 +11,7 @@ import {execute, subscribe} from 'graphql';
 import {createServer} from 'http';
 import {SubscriptionServer} from 'subscriptions-transport-ws';
 import {uploadRouter} from "./server/upload";
+
 const myGraphQLSchema = schema;
 const PORT = process.env.port || 3000;
 const passport = require('passport');

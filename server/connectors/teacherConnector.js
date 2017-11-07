@@ -35,7 +35,7 @@ export async function addTeacher(data) {
  * @returns {Promise.<*>}
  */
 export async function teacherLogin(data) {
-  return await TeacherModel.findOne({unit_id: data.unit_id}, (err, user) => {
+  return await TeacherModel.findOne({email: data.unit_id}, (err, user) => {
     if (err)
       console.log("Error when finding " + data);
     else
