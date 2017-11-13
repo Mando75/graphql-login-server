@@ -8,9 +8,9 @@ export const StudentSchema = Mongoose.Schema({
   last_name: String,
   orgId: String,
   unit_id: String,
-  section: String,
   authToken: String,
-  type: String
+  type: String,
+  create_date: Date
 }, {collection: "Students"});
 
 const StudentModel = Mongoose.model('Student', StudentSchema);

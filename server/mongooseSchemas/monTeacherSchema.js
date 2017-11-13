@@ -10,7 +10,8 @@ const TeacherSchema = Mongoose.Schema({
   password: String,
   sections: [String],
   authToken: String,
-  type: String
+  type: String,
+  create_date: String
 }, {collection: "Teachers"});
 
 const TeacherModel = Mongoose.model('Teacher', TeacherSchema);

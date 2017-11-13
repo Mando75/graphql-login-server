@@ -23,7 +23,7 @@ export async function addTeacher(data) {
   const newTeacher = new TeacherModel({
     first_name: data.first_name, last_name: data.last_name,
     email: data.email, password: password, sections: data.sections,
-    type: "teacher"
+    type: "teacher", create_date: new Date()
   });
   newTeacher.save();
   return newTeacher;

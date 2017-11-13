@@ -65,7 +65,7 @@ export async function addStudent(data) {
   const unit_id = await genUnitId();
   const newStudent = new StudentModel({
     first_name: data.first_name, last_name: data.last_name,
-    orgId: data.orgId, section: data.section, unit_id: unit_id, type: 'student'
+    orgId: data.orgId, section: data.section, unit_id: unit_id, type: 'student', create_date: new Date()
   });
   newStudent.save();
   return newStudent;
