@@ -3,7 +3,7 @@ import Mongoose from './mongodb-connection';
 /**
  *
  */
-const StudentSchema = Mongoose.Schema({
+export const StudentSchema = Mongoose.Schema({
   first_name: String,
   last_name: String,
   orgId: String,

@@ -29,7 +29,7 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(passport.initialize());
 
-server.use('*', cors({origin: 'http://localhost:3001'}));
+//server.use('*', cors({origin: 'http://localhost:3001'}));
 
 
 server.get('/', (req, res) => {
