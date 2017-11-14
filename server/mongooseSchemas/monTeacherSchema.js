@@ -8,7 +8,7 @@ const TeacherSchema = Mongoose.Schema({
   last_name: String,
   email: String,
   password: String,
-  sections: [String],
+  sections: [Number],
   authToken: String,
   type: String,
   create_date: String

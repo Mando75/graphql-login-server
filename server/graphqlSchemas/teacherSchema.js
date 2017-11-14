@@ -4,7 +4,7 @@ const TeacherSchema = `
     first_name: String!
     last_name: String!
     email: String!
-    sections: [String]
+    sections: [Int]
     type: String!
   }
   
@@ -15,7 +15,7 @@ const TeacherSchema = `
   
   extend type Mutation {
     addTeacher(first_name: String!, last_name: String!, email: String!, 
-               password: String!, sections: [String]): Teacher
+               password: String!, sections: [Int]): Teacher
   }
 `;
 
