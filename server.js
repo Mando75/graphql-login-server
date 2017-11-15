@@ -1,9 +1,6 @@
 /**
  * created by Bryan Muller
  */
-// start the mongo server
-import {mongodstart} from "./mongostart";
-mongodstart();
 
 // server packages
 import express from 'express';
