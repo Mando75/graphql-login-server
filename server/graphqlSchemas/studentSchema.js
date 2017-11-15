@@ -9,7 +9,6 @@ const StudentSchema = `
     first_name: String!
     last_name: String!
     unit_id: String
-    section: String
     authToken: String
     type: String
   }
@@ -21,8 +20,7 @@ const StudentSchema = `
   }
   
   extend type Mutation {
-    addStudent(first_name: String!, last_name: String!, orgId: String!,
-          section: String!): Student
+    addStudent(first_name: String!, last_name: String!, orgId: String!): Student
   }
   `;
 

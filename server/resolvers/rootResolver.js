@@ -1,6 +1,7 @@
 import { merge } from 'lodash';
 import studentMap from './studentResolver';
 import teacherMap from './teacherResolver';
+import sectionMap from './sectionResolver'
 
 /**
  * Our root resolver map.
@@ -13,4 +14,4 @@ const rootResolver = {
 };
 
 
-export const resolvers = merge(rootResolver, studentMap, teacherMap);
+export const resolvers = merge(rootResolver, studentMap, teacherMap, sectionMap);

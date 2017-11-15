@@ -8,9 +8,10 @@ const TeacherSchema = Mongoose.Schema({
   last_name: String,
   email: String,
   password: String,
-  sections: [String],
+  sections: [Mongoose.Schema.Types.ObjectId],
   authToken: String,
-  type: String
+  type: String,
+  create_date: String
 }, {collection: "Teachers"});
 
 const TeacherModel = Mongoose.model('Teacher', TeacherSchema);

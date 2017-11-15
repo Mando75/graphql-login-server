@@ -5,6 +5,7 @@
 import { makeExecutableSchema,} from 'graphql-tools';
 import StudentSchema from './graphqlSchemas/studentSchema';
 import TeacherSchema from './graphqlSchemas/teacherSchema';
+import SectionSchema from './graphqlSchemas/sectionSchema';
 import { resolvers } from './resolvers/rootResolver';
 
 const RootQuery = `
@@ -27,7 +28,7 @@ const schemaDef = `
  * Pass makeExecutableSchema an array of type definitions
  * and resolvers.
  */
-const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, StudentSchema, TeacherSchema],
+const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, StudentSchema, SectionSchema, TeacherSchema],
                                       resolvers: resolvers});
 
 

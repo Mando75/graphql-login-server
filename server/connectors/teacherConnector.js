@@ -22,8 +22,8 @@ export async function addTeacher(data) {
   const password = await  bcrypt.hash(data.password, salt);
   const newTeacher = new TeacherModel({
     first_name: data.first_name, last_name: data.last_name,
-    email: data.email, password: password, sections: data.sections,
-    type: "teacher"
+    email: data.email, password: password,
+    type: "teacher", create_date: new Date()
   });
   newTeacher.save();
   return newTeacher;
@@ -51,7 +51,7 @@ export async function teacherLogin(data) {
  * @returns {Promise.<*>}
  */
 export async function findTeacherById(teacher_id) {
-  return await TeacherModel.findById(teacher_id, (err, teacher) => {
+  return await TeacherModel.findById(teacher_id).populate('sections').exec((err, teacher) => {
     if (err) {
       console.log('Error when finding' + teacher_id);
       return null;
