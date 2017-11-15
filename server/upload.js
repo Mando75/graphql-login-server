@@ -4,6 +4,7 @@ import {SectionModel} from "./mongooseSchemas/monSectionSchema";
 
 const Multer = require('multer');
 import StudentModel from './mongooseSchemas/monStudentSchema';
+import TeacherModel from "./mongooseSchemas/monTeacherSchema";
 
 const fs = require('fs');
 const csv = require('fast-csv');
@@ -17,12 +18,17 @@ const uploadRouter = express.Router();
  * file which will be saved in the user collection.
  */
 uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
+
   if (!req.file) {
     res.status(400).json({message: "No file found. Please attach file and try again"}).end();
     return next();
+  } else if (!req.body.section_data){
+    res.status(400).json({message: "Missing file data. Please check your request"});
+    return next();
   }
+
   const file = req.file;
-  console.log(file.mimetype);
+  const sectionData = JSON.parse(req.body.section_data);
   const stream = fs.createReadStream(file.path);
   let users = [];
 
@@ -51,6 +57,7 @@ uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
       }
     });
 
+    const userIds = users.map(user => user._id);
     /** TODO
      * WARNING: I don't know why this works. Somehow the users
      * array is being modified by the StudentModel insert above,
@@ -58,15 +65,22 @@ uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
      * been warned.
      */
     const newSection = new SectionModel({
-      section_number: req.body.section_number,
-      course_code: req.body.course_code,
-      instructor: req.authpayload._id,
-      start_date: Date.parse(req.body.start_date),
-      end_date: Date.parse(req.body.end_date),
-      students: users,
+      section_number: sectionData.section_number,
+      course_code: sectionData.course_code,
+      instructor : req.authpayload._id,
+      start_date: Date.parse(sectionData.start_date),
+      end_date: Date.parse(sectionData.end_date),
+      students: userIds,
       create_date: new Date()
     });
-    newSection.save();
+
+    newSection.save((err, section) => {
+      if(err) { console.log(err); return err; }
+      TeacherModel.update({_id: section.instructor }, {$push: {sections: section._id}}, (err, teach) => {
+        if(err) {console.log('Error when updating instructor', err); return err}
+        return teach;
+      });
+    });
     // respond with message and user array
     res.json({
       message: "file received. Users inserted",

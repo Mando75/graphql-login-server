@@ -4,10 +4,13 @@ import {StudentSchema} from "./monStudentSchema";
 const SectionSchema = new Mongoose.Schema({
   course_code: String,
   section_number: Number,
-  instructor: Mongoose.Schema.Types.ObjectId,
+  instructor: {
+    ref: 'Teacher',
+    type: Mongoose.Schema.Types.ObjectId
+  },
   start_date: Date,
   end_date: Date,
-  students: [StudentSchema],
+  students: [{type: Mongoose.Schema.Types.ObjectId, ref: 'Student'}],
   create_date: Date
 }, {collection: 'Sections'});
 

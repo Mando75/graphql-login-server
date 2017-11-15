@@ -5,7 +5,7 @@ import {SectionModel} from '../mongooseSchemas/monSectionSchema'
  * @returns {Promise.<void>}
  */
 export async function getSections() {
-  return await SectionModel.find((err, sections) => {
+  return await SectionModel.find().populate('instructor students').exec((err, sections) => {
     if(err) {
       console.log('Error when finding sections');
       return err;
@@ -22,7 +22,7 @@ export async function getSections() {
  * @returns {Promise.<*>}
  */
 export async function findSectionByCodeAndNum(code, num) {
-  return await SectionModel.findOne({course_code: code, section_number: num}, (err, section) => {
+  return await SectionModel.findOne({course_code: code, section_number: num}).populate('instructor students').exec((err, section) => {
     if (err) {
       console.log('Error when finding section');
       return err;
@@ -38,7 +38,7 @@ export async function findSectionByCodeAndNum(code, num) {
  * @returns {Promise.<*>}
  */
 export async function findSectionById(id) {
-  return await SectionModel.findById(id).populate('instructor').exec((err, section) => {
+  return await SectionModel.findById(id).populate('instructor students').exec((err, section) => {
     if (err) {
       console.log("error when finding section");
       return err;

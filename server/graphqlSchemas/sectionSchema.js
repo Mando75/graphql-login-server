@@ -8,7 +8,7 @@ const SectionSchema = `
     _id: ID!
     course_code: String!
     section_number: Int!
-    instructor: ID!
+    instructor: Teacher!
     start_date: String!
     end_date: String!
     students: [Student]
