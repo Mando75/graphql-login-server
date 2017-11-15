@@ -1,7 +1,11 @@
 /**
  * created by Bryan Muller
  */
-//server packages
+// start the mongo server
+import {mongodstart} from "./mongostart";
+mongodstart();
+
+// server packages
 import express from 'express';
 import bodyParser from 'body-parser';
 import {graphqlExpress, graphiqlExpress} from 'apollo-server-express';
@@ -19,6 +23,8 @@ const passport = require('passport');
 import {strategy, authRouter} from "./server/auth/auth";
 import {checkAuthRouter} from "./server/auth/checkauth";
 import {decodeJWT, verifyTeacher} from "./server/auth/authHelpers";
+
+
 
 passport.use(strategy);
 
