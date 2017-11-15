@@ -8,7 +8,7 @@ const TeacherSchema = Mongoose.Schema({
   last_name: String,
   email: String,
   password: String,
-  sections: [{ref: 'Section', type: Mongoose.Schema.Types.ObjectId}],
+  sections: [Mongoose.Schema.Types.ObjectId],
   authToken: String,
   type: String,
   create_date: String

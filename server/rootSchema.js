@@ -28,7 +28,7 @@ const schemaDef = `
  * Pass makeExecutableSchema an array of type definitions
  * and resolvers.
  */
-const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, StudentSchema, TeacherSchema, SectionSchema],
+const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, StudentSchema, SectionSchema, TeacherSchema],
                                       resolvers: resolvers});
 
 

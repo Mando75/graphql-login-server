@@ -18,7 +18,7 @@ const uploadRouter = express.Router();
  * file which will be saved in the user collection.
  */
 uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
-
+  // checking the proper data was provided
   if (!req.file) {
     res.status(400).json({message: "No file found. Please attach file and try again"}).end();
     return next();
@@ -27,8 +27,18 @@ uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
     return next();
   }
 
+  /* attempt to parse section_data as a JSON object. This object
+  *  holds all the
+  */
+  let sectionData;
+  try {
+    sectionData = JSON.parse(req.body.section_data);
+  } catch(e) {
+    res.status(400).json({message: "Error when parsing request. Section data was improperly formatted."})
+    return next();
+  }
   const file = req.file;
-  const sectionData = JSON.parse(req.body.section_data);
+
   const stream = fs.createReadStream(file.path);
   let users = [];
 
