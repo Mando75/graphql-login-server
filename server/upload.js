@@ -48,7 +48,8 @@ uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
     data.org_id = data.org_id.replace('#', '');
     // add each object to the array
     users.push(data);
-  }).on('error', () => {
+  }).on('error', (err) => {
+    console.log(err);
     res.status(415).json({message: "Invalid file. Please upload a compatible csv"}).end();
     return next();
   }).on('end', async () => {
@@ -74,15 +75,7 @@ uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
      * which adds a Mongodb _id field to it. If this breaks, you have
      * been warned.
      */
-    const newSection = new SectionModel({
-      section_number: sectionData.section_number,
-      course_code: sectionData.course_code,
-      instructor : req.authpayload._id,
-      start_date: Date.parse(sectionData.start_date),
-      end_date: Date.parse(sectionData.end_date),
-      students: userIds,
-      create_date: new Date()
-    });
+    const newSection = createSection(sectionData, req.authpayload._id, userIds);
 
     newSection.save((err, section) => {
       if(err) { console.log(err); return err; }
@@ -106,3 +99,15 @@ uploadRouter.get('/csvupload', (req, res, next) => {
 
 export {uploadRouter};
 
+
+function createSection(sectionData, teacher_id, user_ids) {
+  return new SectionModel({
+    section_number: sectionData.section_number,
+    course_code: sectionData.course_code,
+    instructor : teacher_id,
+    start_date: Date.parse(sectionData.start_date),
+    end_date: Date.parse(sectionData.end_date),
+    students: user_ids,
+    create_date: new Date()
+  });
+}
