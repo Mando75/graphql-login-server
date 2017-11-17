@@ -1,11 +1,9 @@
 import express from 'express';
 import {genUnitId} from "./connectors/studentConnector";
 import {SectionModel} from "./mongooseSchemas/monSectionSchema";
-
-const Multer = require('multer');
 import StudentModel from './mongooseSchemas/monStudentSchema';
 import TeacherModel from "./mongooseSchemas/monTeacherSchema";
-
+const Multer = require('multer');
 const fs = require('fs');
 const csv = require('fast-csv');
 const upload = Multer({dest: './uploads/'});
@@ -28,17 +26,19 @@ uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
   }
 
   /* attempt to parse section_data as a JSON object. This object
-  *  holds all the
+  *  holds all the data needed to insert the section
   */
   let sectionData;
   try {
     sectionData = JSON.parse(req.body.section_data);
+    verifySectionData(sectionData);
   } catch(e) {
     res.status(400).json({message: "Error when parsing request. Section data was improperly formatted."})
     return next();
   }
-  const file = req.file;
 
+
+  const file = req.file;
   const stream = fs.createReadStream(file.path);
   let users = [];
 
@@ -99,7 +99,29 @@ uploadRouter.get('/csvupload', (req, res, next) => {
 
 export {uploadRouter};
 
+/**
+ * Used to verify that the proper data is being submitted. Throws an error
+ * if object is invalid
+ * @param data
+ * @returns {boolean}
+ */
+function verifySectionData(data) {
+  if(data.hasOwnProperty('section_number') &&
+    data.hasOwnProperty('course_code') &&
+    data.hasOwnProperty('start_date') &&
+    data.hasOwnProperty('end_date')) {
+      return true;
+  } else {
+    throw new Error('Invalid object');
+  }
+}
 
+/**
+ * Returns a new section model built with provided data
+ * @param sectionData - contains elements course_code, start and end dates, and section number
+ * @param teacher_id - teacher creating the section
+ * @param user_ids - array of students associated with this section
+ */
 function createSection(sectionData, teacher_id, user_ids) {
   return new SectionModel({
     section_number: sectionData.section_number,
