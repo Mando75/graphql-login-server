@@ -68,13 +68,14 @@ uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
       }
     });
 
-    const userIds = users.map(user => user._id);
     /** TODO
-     * WARNING: I don't know why this works. Somehow the users
-     * array is being modified by the StudentModel insert above,
-     * which adds a Mongodb _id field to it. If this breaks, you have
-     * been warned.
+     * WARNING: This may be unstable. I believe the _id is being added by the
+     * db.collection.insert call above. According to the docs, the _id field is added BEFORE insert.
+     * This modifies the user object array. You can read more about this mutation in the official docs:
+     * {@link https://docs.mongodb.com/manual/reference/method/db.collection.insert/#id-field}
      */
+    const userIds = users.map(user => user._id);
+
     const newSection = createSection(sectionData, req.authpayload._id, userIds);
 
     newSection.save((err, section) => {
