@@ -10,6 +10,7 @@ export const StudentSchema = Mongoose.Schema({
   unit_id: String,
   authToken: String,
   type: String,
+  sections: [Mongoose.Schema.Types.ObjectId],
   create_date: Date
 }, {collection: "Students"});
 

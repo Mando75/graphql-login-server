@@ -4,7 +4,7 @@ import {StudentSchema} from "./monStudentSchema";
 const SectionSchema = new Mongoose.Schema({
   course_code: String,
   section_number: Number,
-  instructor: {
+  teacher: {
     ref: 'Teacher',
     type: Mongoose.Schema.Types.ObjectId
   },
