@@ -63,6 +63,9 @@ uploadRouter.post('/', upload.single('student_csv'), (req, res, next) => {
       row.create_date = new Date();
     });
     // insert the users in the array
+    /* TODO Check for duplicates before insertion
+     * Do not add these users, but add existing accounts instead
+     */
     StudentModel.collection.insert(users, (err) => {
       if (err)
         console.log(err);
@@ -121,7 +124,7 @@ function createSection(sectionData, teacher_id, user_ids) {
   return new SectionModel({
     section_number: sectionData.section_number,
     course_code: sectionData.course_code,
-    instructor: teacher_id,
+    teacher: teacher_id,
     start_date: Date.parse(sectionData.start_date),
     end_date: Date.parse(sectionData.end_date),
     students: user_ids,
@@ -129,6 +132,12 @@ function createSection(sectionData, teacher_id, user_ids) {
   });
 }
 
+/**
+ * callback function for creating a new section
+ * @param err
+ * @param section
+ * @returns {*}
+ */
 function newSectionCallback(err, section) {
   if (err) {
     console.log(err);
@@ -139,7 +148,7 @@ function newSectionCallback(err, section) {
   TeacherModel.update({_id: section.instructor}, {$push: {sections: section._id}}, (err, teach) => {
     if (err) {
       console.log('Error when updating instructor', err);
-      return err
+      return err;
     }
     return teach;
   });
@@ -151,5 +160,5 @@ function newSectionCallback(err, section) {
       return err;
     }
     return msg;
-  })
+  });
 }
