@@ -2,10 +2,10 @@ import * as Section from "../connectors/sectionConnector";
 
 /**
  *
- * @type {{RootQuery: {sections: (function(*, *): Promise), sectionByCodeAndNum: (function(*, *): Promise), sectionById: (function(*, *): Promise)}}}
+ * @type {{CourseQuery: {sections: (function(*, *): Promise), sectionByCodeAndNum: (function(*, *): Promise), sectionById: (function(*, *): Promise)}}}
  */
 const sectionMap = {
-  RootQuery: {
+  CourseQuery: {
     async sections(obj, args) {
       return await Section.getSections();
     },

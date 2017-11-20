@@ -10,7 +10,8 @@ import { resolvers } from './resolvers/rootResolver';
 
 const RootQuery = `
   type RootQuery {
-    test: Boolean
+    user: UserQuery ,
+    course: CourseQuery
   }`;
 
 const Mutation = ` type Mutation { 
@@ -28,7 +29,7 @@ const schemaDef = `
  * Pass makeExecutableSchema an array of type definitions
  * and resolvers.
  */
-const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, StudentSchema, SectionSchema, TeacherSchema],
+const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, TeacherSchema, StudentSchema, SectionSchema],
                                       resolvers: resolvers});
 
 

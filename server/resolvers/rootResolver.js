@@ -10,8 +10,10 @@ import sectionMap from './sectionResolver'
  * @type {{RootQuery: {}}}
  */
 const rootResolver = {
-  RootQuery: {  }
+  RootQuery: {
+    user: {},
+    course: {}
+  }
 };
 
-
-export const resolvers = merge(rootResolver, studentMap, teacherMap, sectionMap);
+export const resolvers = merge(rootResolver, teacherMap, sectionMap, studentMap);

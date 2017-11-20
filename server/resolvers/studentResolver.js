@@ -7,7 +7,7 @@ import * as Student from "../connectors/studentConnector";
  * @type {{RootQuery: {StudentById: (function(*, *): Promise), StudentByInumber: (function(*, *): Promise), Students: (function(*, *): Promise)}}}
  */
 const studentMap = {
-  RootQuery: {
+  UserQuery: {
     async studentById(obj, args) {
       return await Student.findStudentById(args.student_id);
     },
@@ -15,6 +15,7 @@ const studentMap = {
       return await Student.findStudentByUnitId(args.unit_id);
     },
     async students(obj, args) {
+      console.log(obj, args);
       return await Student.getStudents();
     }
   },

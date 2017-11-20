@@ -14,7 +14,7 @@ const TeacherSchema = `
     type: String!
   }
   
-  extend type RootQuery {
+  type UserQuery {
     #Returns a list of all teachers
     teachers: [Teacher]
     #Finds one teacher by db _id field

@@ -21,7 +21,7 @@ const StudentSchema = `
     sections: [ID]
   }
   
-  extend type RootQuery {
+  extend type UserQuery {
     #Returns a list of all students
     students: [Student]
     #Returns a student using db _id field

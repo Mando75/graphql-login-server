@@ -25,7 +25,7 @@ const SectionSchema = `
     create_date: String
   }
   
-  extend type RootQuery {
+   type CourseQuery {
     #Returns a list of all sections
     sections: [Section]
     #Find a section by Course Code and Section Number

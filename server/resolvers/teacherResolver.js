@@ -1,7 +1,7 @@
 import * as Teacher from '../connectors/teacherConnector';
 
 const teacherMap = {
-  RootQuery: {
+  UserQuery: {
     async teachers() {
       return await Teacher.getTeachers();
     },
