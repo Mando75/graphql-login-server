@@ -3,6 +3,7 @@
  */
 
 import { makeExecutableSchema,} from 'graphql-tools';
+import {userInterface} from "./graphqlSchemas/interfaces/userInterface";
 import StudentSchema from './graphqlSchemas/studentSchema';
 import TeacherSchema from './graphqlSchemas/teacherSchema';
 import SectionSchema from './graphqlSchemas/sectionSchema';
@@ -28,7 +29,7 @@ const schemaDef = `
  * Pass makeExecutableSchema an array of type definitions
  * and resolvers.
  */
-const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, StudentSchema, SectionSchema, TeacherSchema],
+const schema = makeExecutableSchema({ typeDefs: [schemaDef, RootQuery, Mutation, userInterface, StudentSchema, SectionSchema, TeacherSchema],
                                       resolvers: resolvers});
 
 

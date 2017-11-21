@@ -1,5 +1,6 @@
+
 const TeacherSchema = `
-  type Teacher {
+  type Teacher implements User{
     #Unique database identifier
     _id: ID!
     #Self descriptive
@@ -11,7 +12,7 @@ const TeacherSchema = `
     #List of sections this teacher owns
     sections: [ID!]
     #User type
-    type: String!
+    type: UserType!
   }
   
   extend type RootQuery {
