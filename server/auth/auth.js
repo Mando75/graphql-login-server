@@ -40,13 +40,11 @@ authRouter.post('/auth', async (req, res, next) => {
     };
 
     // async call to find user based on login information
-    const user = await findUser(data);
+    let user = await findUser(data);
+    //user = user._doc;
     // password is stored one of two ways, as the orgId, or the password.
     // this grabs the correct one agnostically.
-    let userpass;
-    if(user) {
-      userpass = user.orgId || user.password;
-    }
+    const userpass = user ? user.org_id || user.password : null;
 
     if (!user) {
       res.status(401).json({message: "no such user found"});
