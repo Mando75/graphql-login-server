@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import {ExtractJwt, Strategy} from 'passport-jwt';
-import {findUser, saveAuth} from './authHelpers';
+import {findUser, saveAuth, buildSignInPayload, buildTokenPayload, extractLoginData} from './authHelpers';
 import bcrypt from 'bcrypt'
 
 
@@ -33,15 +33,11 @@ const authRouter = express.Router();
 authRouter.post('/auth', async (req, res, next) => {
   // ensure that proper parameters were provided.
   if (req.body.unit_id && req.body.password && req.body.type) {
-    const data = {
-      unit_id: req.body.unit_id,
-      password: req.body.password,
-      type: req.body.type
-    };
+    const data = extractLoginData(req.body);
 
     // async call to find user based on login information
     let user = await findUser(data);
-    //user = user._doc;
+
     // password is stored one of two ways, as the orgId, or the password.
     // this grabs the correct one agnostically.
     const userpass = user ? user.org_id || user.password : null;
@@ -51,21 +47,12 @@ authRouter.post('/auth', async (req, res, next) => {
       return next();
     } else if (userpass === data.password || await bcrypt.compare(data.password, userpass)) {
       // if data was correct, create a jwt payload
-      const payload = {
-        _id: user._id,
-        unit_id: user.unit_id,
-        type: user.type
-      };
+      const payload = buildTokenPayload(user);
       // set a token with 14 day lifespan
       const token = jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn: '14d'});
 
       // define payload to send to user
-      const userPayload = {
-        _id: user._id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        type: user.type
-      };
+      const userPayload = buildSignInPayload(user);
       res.json({message: "Authenticated", token: token, user: userPayload});
       // save token to the db
       await saveAuth(token, user.type, user._id);
