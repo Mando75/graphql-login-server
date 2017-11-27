@@ -23,6 +23,7 @@
     "express": "^4.16.2",
     "fast-csv": "^2.4.1",
     "graphql": "^0.11.7",
+    "graphql-rule": "^0.0.19",
     "graphql-subscriptions": "^0.5.4",
     "graphql-tools": "^2.4.0",
     "http": "^0.0.0",

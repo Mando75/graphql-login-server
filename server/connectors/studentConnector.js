@@ -1,4 +1,5 @@
 import StudentModel from '../mongooseSchemas/monStudentSchema';
+import {studentRule, StudentRule} from '../auth/rules/userRule';
 
 /**
  * A search query for finding users by MongoDb id. Returns
@@ -6,8 +7,8 @@ import StudentModel from '../mongooseSchemas/monStudentSchema';
  * @param student_id
  * @returns {Query}
  */
-export async function findStudentById(student_id) {
-  return await StudentModel.findById(student_id, (err, student) => {
+export async function findStudentById(student_id, context) {
+  const student = await StudentModel.findById(student_id, (err, student) => {
     if (err) {
       console.log('Error when finding' + student_id);
       return err;
@@ -15,6 +16,9 @@ export async function findStudentById(student_id) {
     else
       return student;
   });
+  const stu = new StudentRule(student, context);
+  console.log(stu);
+  return stu;
 }
 
 /**
