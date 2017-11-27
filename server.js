@@ -53,7 +53,7 @@ server.use('/checkauth',
 // graphql endpoint
 server.use('/graphql',
     //auth,
-    bodyParser.json(), graphqlExpress({schema: myGraphQLSchema}));
+    bodyParser.json(), graphqlExpress(request => ({schema: myGraphQLSchema, context: request.authpayload})));
 
 // for development only
 server.use('/graphiql',
