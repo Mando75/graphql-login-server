@@ -13,7 +13,10 @@ const sectionMap = {
       return await Section.findSectionByCodeAndNum(args.course_code, args.section_number);
     },
     async sectionById(obj, args) {
-      return await Section.findSectionById(args._id)
+      return await Section.findSectionById(args.section_id)
+    },
+    async sectionsByTeacherId(obj, args) {
+      return await Section.findSectionsByTeacherId(args.teacher_id)
     }
   }
 };
