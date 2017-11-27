@@ -87,3 +87,44 @@ export async function verifyTeacher(req, res, next) {
     res.status(403).json({message: "You are not authorized to view this page"}).end();
   }
 }
+
+/**
+ * Extract the login data from request body and return it as an object
+ * @param body
+ * @returns {{unit_id: *, password: *, type}}
+ */
+export function extractLoginData(body) {
+  return {
+    unit_id: body.unit_id,
+    password: body.password,
+    type: body.type
+  }
+}
+
+/**
+ * Builds the sign in payload to be returned to the
+ * client unhashed
+ * @param user
+ * @returns {{_id, unit_id: *, type}}
+ */
+export function buildSignInPayload(user) {
+  return {
+    _id: user._id,
+    unit_id: user.unit_id,
+    type: user.type
+  }
+}
+
+/**
+ * Builds the token payload to be signed and sent with
+ * the payload
+ * @param user
+ * @returns {{_id, unit_id: *, type}}
+ */
+export function buildTokenPayload(user) {
+  return {
+    _id: user._id,
+    unit_id: user.unit_id,
+    type: user.type
+  }
+}
