@@ -1,5 +1,5 @@
 import StudentModel from '../mongooseSchemas/monStudentSchema';
-import {studentRule, StudentRule} from '../auth/rules/userRule';
+import {StudentRule} from '../auth/rules/studentRule';
 
 /**
  * A search query for finding users by MongoDb id. Returns
@@ -17,7 +17,6 @@ export async function findStudentById(student_id, context) {
       return student;
   });
   const stu = new StudentRule(student, context);
-  console.log(stu);
   return stu;
 }
 
