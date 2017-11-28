@@ -15,7 +15,11 @@ const studentMap = {
       return await Student.findStudentByUnitId(args.unit_id, context);
     },
     async students(obj, args, context) {
-      return await Student.getStudents(context);
+      try {
+        return await Student.getStudents(context);
+      } catch(e) {
+        return e;
+      }
     }
   },
   Mutation: {

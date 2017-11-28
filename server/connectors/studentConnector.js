@@ -16,20 +16,22 @@ export async function findStudentById(student_id, context) {
     else
       return student;
   });
-  const stu = new StudentRule(student, context);
-  return stu;
+  return new StudentRule(student, context);
 }
 
 /**
  *  Function that returns a list of all users in the db in the form of a Promise
  */
-export async function getStudents() {
-  return await StudentModel.find((err, users) => {
+export async function getStudents(context) {
+  const students = await StudentModel.find((err, users) => {
     if (err) {
       console.log('Error when finding users');
       return err;
     } else
       return users;
+  });
+  return students.map((student) => {
+    return new StudentRule(student, context);
   });
 }
 
@@ -41,13 +43,14 @@ export async function getStudents() {
  * @returns {Query|*}
  */
 export async function findStudentByUnitId(unit_id) {
-  return await StudentModel.findOne({unit_id: unit_id}, (err, user) => {
+  const student = await StudentModel.findOne({unit_id: unit_id}, (err, user) => {
     if (err) {
       console.log('Error when finding' + unit_id);
       return err;
     } else
       return user;
   });
+  return new StudentRule(student, context);
 }
 
 /**
