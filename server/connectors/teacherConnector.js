@@ -88,3 +88,22 @@ export async function findTeacherAuth(teacher_id) {
     }
   })
 }
+
+/**
+ *
+ * @param teacher_id
+ * @param new_data
+ * @param context
+ * @returns {Promise<void>}
+ */
+export async function editTeacher(teacher_id, new_data, context) {
+  const teacher = await TeacherModel.findOneAndUpdate({_id: teacher_id}, new_data, {upsert: false, new: true}).exec().then((err, teacher) => {
+    if (err) {
+      console.log(err);
+      return err;
+    } else {
+      return new TeacherRule(teacher, context);
+    }
+  });
+  return teacher;
+}

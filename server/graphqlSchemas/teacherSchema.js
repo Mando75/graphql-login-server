@@ -25,8 +25,22 @@ const TeacherSchema = `
   }
   
   extend type Mutation {
-    addTeacher(first_name: String!, last_name: String!, email: String!, 
-               password: String!): Teacher
+    addTeacher(teacher: CreateTeacher!): Teacher
+    editTeacher(teacher_id: ID!, new_data: EditTeacher!): Teacher
+  }
+  
+  input CreateTeacher {
+    first_name: String!
+    last_name: String!
+    email: String!
+    password: String!
+  }
+  
+  input EditTeacher {
+    first_name: String
+    last_name: String
+    email: String
+    sections: [ID]
   }
 `;
 

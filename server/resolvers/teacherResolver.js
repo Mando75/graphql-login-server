@@ -11,8 +11,13 @@ const teacherMap = {
     },
   },
   Mutation: {
-    async addTeacher(obj, args) {
-      return await Teacher.addTeacher(args);
+    async addTeacher(obj, args, context) {
+      return await Teacher.addTeacher(args.teacher);
+    },
+    async editTeacher(obj, args, context) {
+      const teacher = await Teacher.editTeacher(args.teacher_id, args.new_data, context);
+      console.log(teacher);
+      return teacher
     }
   }
 };
