@@ -111,7 +111,7 @@ export function buildSignInPayload(user) {
   return {
     _id: user._id,
     unit_id: user.unit_id,
-    type: user.type
+    type: user.type,
   }
 }
 
@@ -125,6 +125,7 @@ export function buildTokenPayload(user) {
   return {
     _id: user._id,
     unit_id: user.unit_id,
-    type: user.type
+    type: user.type,
+    sections: user.sections
   }
 }

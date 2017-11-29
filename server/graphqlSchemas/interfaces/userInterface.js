@@ -5,6 +5,7 @@ export const userInterface = `
       _id: ID!
       email: String
       type: UserType!
+      authToken: String
     }
     
     enum UserType {

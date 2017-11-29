@@ -23,6 +23,7 @@ export async function findStudentById(student_id, context) {
  *  Function that returns a list of all users in the db in the form of a Promise
  */
 export async function getStudents(context) {
+  console.log(context);
   const students = await StudentModel.find((err, users) => {
     if (err) {
       console.log('Error when finding users');
@@ -30,9 +31,7 @@ export async function getStudents(context) {
     } else
       return users;
   });
-  return students.map((student) => {
-    return new StudentRule(student, context);
-  });
+  return students.map(student => new StudentRule(student, context));
 }
 
 /**
@@ -84,7 +83,7 @@ export async function addStudent(data) {
  * @returns {Promise.<*>}
  */
 export async function studentLogin(data) {
-  return await StudentModel.findOne({unit_id: data.unit_id}, '_id first_name last_name section type org_id', (err, user) => {
+  return await StudentModel.findOne({unit_id: data.unit_id}, '_id first_name last_name sections type org_id', (err, user) => {
     if (err) {
       console.log("Error when finding " + data);
       return {};
