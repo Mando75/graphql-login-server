@@ -13,6 +13,8 @@ const TeacherSchema = `
     sections: [ID!]
     #User type
     type: UserType!
+    #saved Auth Token
+    authToken: String
   }
   
   extend type RootQuery {

@@ -1,12 +1,13 @@
 import * as Teacher from '../connectors/teacherConnector';
 
+
 const teacherMap = {
   RootQuery: {
-    async teachers() {
-      return await Teacher.getTeachers();
+    async teachers(obj, args, context) {
+      return await Teacher.getTeachers(context);
     },
-    async teacherById(teacher_id) {
-      return await Teacher.findTeacherById(teacher_id);
+    async teacherById(obj, args, context) {
+      return await Teacher.findTeacherById(args.teacher_id, context);
     },
   },
   Mutation: {

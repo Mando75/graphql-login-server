@@ -1,16 +1,17 @@
-import {SectionModel} from '../mongooseSchemas/monSectionSchema'
+import {SectionModel} from '../mongooseSchemas/monSectionSchema';
+import {SectionRule } from "../auth/rules/sectionRule";
 
 /**
  *
  * @returns {Promise.<void>}
  */
-export async function getSections() {
-  return await SectionModel.find().populate('teacher students').exec((err, sections) => {
+export async function getSections(context) {
+  return await SectionModel.find().populate('teacher students', '_id first_name last_name email type unit_id').exec((err, sections) => {
     if (err) {
       console.log('Error when finding sections');
       return err;
     } else {
-      return sections;
+      return sections.map(section => new SectionRule(section, context));
     }
   })
 }
@@ -40,13 +41,13 @@ export async function findSectionByCodeAndNum(code, num) {
  * @param id
  * @returns {Promise.<*>}
  */
-export async function findSectionById(id) {
-  return await SectionModel.findById(id).populate('teacher students').exec((err, section) => {
+export async function findSectionById(id, context) {
+  return await SectionModel.findById(id).populate('teacher students',
+      'first_name last_name _id email type unit_id').exec((err, section) => {
     if (err) {
       console.log("error when finding section");
       return err;
     } else {
-      // console.log(id, section);
       return section;
     }
   });
