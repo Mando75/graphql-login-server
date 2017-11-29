@@ -4,7 +4,7 @@
  * @type {string}
  */
 const StudentSchema = `
-  type Student {
+  type Student implements User {
     #Unique Database id field
     _id:  ID!
     #Self descriptive
@@ -16,9 +16,10 @@ const StudentSchema = `
     #Stored authentication token
     authToken: String
     #User type
-    type: String
+    type: UserType!
     #Sections user is enrolled in. 
     sections: [ID]
+    email: String
   }
   
   extend type RootQuery {

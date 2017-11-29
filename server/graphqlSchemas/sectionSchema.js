@@ -1,3 +1,5 @@
+
+
 /**
  * Def of SectionSchema
  * @type {string}
@@ -32,6 +34,8 @@ const SectionSchema = `
     sectionByCodeAndNum(course_code: String!, section_number: String!) : Section
     #Find a section using unique database _id field
     sectionById(section_id: ID!) : Section
+    #Find all sections taught by a specific teacher
+    sectionsByTeacherId(teacher_id: ID!) : [Section]
   }
 `;
 
