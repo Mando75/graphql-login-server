@@ -20,7 +20,8 @@ const passport = require('passport');
 import {strategy, authRouter} from "./server/auth/auth";
 import {checkAuthRouter} from "./server/auth/checkauth";
 import {decodeJWT, verifyTeacher} from "./server/auth/authHelpers";
-
+import {mongo} from "./server/mongooseSchemas/mongodb-connection";
+const mongoSanitize = require('express-mongo-sanitize');
 
 
 passport.use(strategy);
@@ -30,6 +31,7 @@ const server = express();
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: true}));
+server.use(mongoSanitize({replaceWith: '_'}));
 server.use(passport.initialize());
 
 //server.use('*', cors({origin: 'http://localhost:3001'}));
