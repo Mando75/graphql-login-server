@@ -97,7 +97,7 @@ export async function findTeacherAuth(teacher_id) {
  * @returns {Promise<void>}
  */
 export async function editTeacher(teacher_id, new_data, context) {
-  const teacher = await TeacherModel.findOneAndUpdate({_id: teacher_id}, new_data, {upsert: false, new: true}).exec().then((err, teacher) => {
+  return await TeacherModel.findOneAndUpdate({_id: teacher_id}, new_data, {upsert: false, new: true}).exec().then((err, teacher) => {
     if (err) {
       console.log(err);
       return err;
@@ -105,5 +105,4 @@ export async function editTeacher(teacher_id, new_data, context) {
       return new TeacherRule(teacher, context);
     }
   });
-  return teacher;
 }

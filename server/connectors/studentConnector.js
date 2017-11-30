@@ -150,3 +150,22 @@ export async function findStudentAuth(student_id) {
       return user;
   })
 }
+
+/**
+ *
+ * @param student_id
+ * @param new_data
+ * @param context
+ * @returns {Promise<*>}
+ */
+export async function editStudent(student_id, new_data, context) {
+  return await StudentModel.findOneAndUpdate({_id: student_id}, new_data,
+      {upsert: false, new: true}).exec().then((err, student) => {
+        if(err) {
+          console.log(err);
+          return err;
+        } else {
+          return new StudentRule(student, context);
+        }
+  })
+}

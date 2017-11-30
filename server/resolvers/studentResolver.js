@@ -4,7 +4,7 @@ import * as Student from "../connectors/studentConnector";
 /**
  * This defines a resolver map for anything regarding the Student Schema.
  * This includes several search queries and mutations
- * @type {{RootQuery: {StudentById: (function(*, *): Promise), StudentByInumber: (function(*, *): Promise), Students: (function(*, *): Promise)}}}
+ * @type {{RootQuery: {studentById(*, *, *=): Promise<*>, studentByUnitId(*, *, *=): Promise<*>, students(*, *, *=): Promise<*>}, Mutation: {addStudent(*, *=): Promise<*>, editStudent(*, *, *=): Promise<*>}}}
  */
 const studentMap = {
   RootQuery: {
@@ -21,6 +21,9 @@ const studentMap = {
   Mutation: {
     async addStudent(obj, args) {
       return await Student.addStudent(args);
+    },
+    async editStudent(obj, args, context) {
+      return await Student.editStudent(args._id, args.new_data, context)
     }
   }
 };
