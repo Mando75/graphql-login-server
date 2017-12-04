@@ -4,7 +4,7 @@
  * @type {string}
  */
 const StudentSchema = `
-  type Student {
+  type Student implements User {
     #Unique Database id field
     _id:  ID!
     #Self descriptive
@@ -16,9 +16,10 @@ const StudentSchema = `
     #Stored authentication token
     authToken: String
     #User type
-    type: String
+    type: UserType!
     #Sections user is enrolled in. 
     sections: [ID]
+    email: String
   }
   
   extend type RootQuery {
@@ -33,6 +34,16 @@ const StudentSchema = `
   extend type Mutation {
     #Add student. It is currently not recommended to use this Mutation, as several fields will be left blank 
     addStudent(first_name: String!, last_name: String!, orgId: String!): Student
+    #Edit Student. Some fields are currently not allowed to be edited. See input type for a list of editable fields
+    editStudent(student_id: ID!, new_data: EditStudent): Student
+  }
+  
+  input EditStudent {
+    first_name: String
+    last_name: String
+    unit_id: String
+    sections: [ID]
+    email: String
   }
   `;
 

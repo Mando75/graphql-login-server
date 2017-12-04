@@ -4,7 +4,7 @@
  */
 
 import {studentLogin, saveStudentToken} from '../connectors/studentConnector';
-import {teacherLogin, saveTeacherToken, findTeacherById} from "../connectors/teacherConnector";
+import {teacherLogin, saveTeacherToken} from "../connectors/teacherConnector";
 
 
 /**
@@ -17,13 +17,10 @@ export async function findUser(data) {
   switch (data.type) {
     case 'teacher':
       return await teacherLogin(data);
-      break;
     case 'student':
       return await studentLogin(data);
-      break;
     default:
       return {};
-      break;
   }
 }
 
@@ -45,7 +42,6 @@ export async function saveAuth(token, type, user_id) {
       break;
     default:
       return null;
-      break;
   }
 }
 
@@ -108,10 +104,12 @@ export function extractLoginData(body) {
  * @returns {{_id, unit_id: *, type}}
  */
 export function buildSignInPayload(user) {
+  console.log(user);
   return {
     _id: user._id,
-    unit_id: user.unit_id,
-    type: user.type
+    first_name: user.first_name,
+    last_name: user.last_name,
+    type: user.type,
   }
 }
 
@@ -125,6 +123,7 @@ export function buildTokenPayload(user) {
   return {
     _id: user._id,
     unit_id: user.unit_id,
-    type: user.type
+    type: user.type,
+    sections: user.sections
   }
 }

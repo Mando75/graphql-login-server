@@ -1,4 +1,5 @@
 import StudentModel from '../mongooseSchemas/monStudentSchema';
+import {StudentRule} from '../auth/rules/studentRule';
 
 /**
  * A search query for finding users by MongoDb id. Returns
@@ -6,8 +7,8 @@ import StudentModel from '../mongooseSchemas/monStudentSchema';
  * @param student_id
  * @returns {Query}
  */
-export async function findStudentById(student_id) {
-  return await StudentModel.findById(student_id, (err, student) => {
+export async function findStudentById(student_id, context) {
+  const student = await StudentModel.findById(student_id, (err, student) => {
     if (err) {
       console.log('Error when finding' + student_id);
       return err;
@@ -15,19 +16,22 @@ export async function findStudentById(student_id) {
     else
       return student;
   });
+  return new StudentRule(student, context);
 }
 
 /**
  *  Function that returns a list of all users in the db in the form of a Promise
  */
-export async function getStudents() {
-  return await StudentModel.find((err, users) => {
+export async function getStudents(context) {
+  console.log(context);
+  const students = await StudentModel.find((err, users) => {
     if (err) {
       console.log('Error when finding users');
       return err;
     } else
       return users;
   });
+  return students.map(student => new StudentRule(student, context));
 }
 
 /**
@@ -38,13 +42,14 @@ export async function getStudents() {
  * @returns {Query|*}
  */
 export async function findStudentByUnitId(unit_id) {
-  return await StudentModel.findOne({unit_id: unit_id}, (err, user) => {
+  const student = await StudentModel.findOne({unit_id: unit_id}, (err, user) => {
     if (err) {
       console.log('Error when finding' + unit_id);
       return err;
     } else
       return user;
   });
+  return new StudentRule(student, context);
 }
 
 /**
@@ -78,7 +83,7 @@ export async function addStudent(data) {
  * @returns {Promise.<*>}
  */
 export async function studentLogin(data) {
-  return await StudentModel.findOne({unit_id: data.unit_id}, '_id first_name last_name section type org_id', (err, user) => {
+  return await StudentModel.findOne({unit_id: data.unit_id}, '_id first_name last_name sections type org_id', (err, user) => {
     if (err) {
       console.log("Error when finding " + data);
       return {};
@@ -143,5 +148,24 @@ export async function findStudentAuth(student_id) {
     }
     else
       return user;
+  })
+}
+
+/**
+ *
+ * @param student_id
+ * @param new_data
+ * @param context
+ * @returns {Promise<*>}
+ */
+export async function editStudent(student_id, new_data, context) {
+  return await StudentModel.findOneAndUpdate({_id: student_id}, new_data,
+      {upsert: false, new: true}).exec().then((err, student) => {
+        if(err) {
+          console.log(err);
+          return err;
+        } else {
+          return new StudentRule(student, context);
+        }
   })
 }

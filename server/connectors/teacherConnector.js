@@ -1,13 +1,14 @@
 import TeacherModel from '../mongooseSchemas/monTeacherSchema';
 import bcrypt from 'bcrypt';
+import {TeacherRule} from "../auth/rules/teacherRule";
 
-export async function getTeachers() {
+export async function getTeachers(context) {
   return await TeacherModel.find((err, teachers) => {
     if (err) {
       console.log('Error when finding users');
       return err;
     } else
-      return teachers;
+      return teachers.map(teacher => new TeacherRule(teacher, context));
   })
 }
 
@@ -35,7 +36,7 @@ export async function addTeacher(data) {
  * @returns {Promise.<*>}
  */
 export async function teacherLogin(data) {
-  return await TeacherModel.findOne({email: data.unit_id}, '_id first_name last_name type password', (err, user) => {
+  return await TeacherModel.findOne({email: data.unit_id}, '_id first_name last_name type password sections', (err, user) => {
     if (err) {
       console.log("Error when finding " + data);
       return {};
@@ -49,14 +50,14 @@ export async function teacherLogin(data) {
  * @param teacher_id
  * @returns {Promise.<*>}
  */
-export async function findTeacherById(teacher_id) {
+export async function findTeacherById(teacher_id, context) {
   return await TeacherModel.findById(teacher_id).populate('sections').exec((err, teacher) => {
     if (err) {
       console.log('Error when finding' + teacher_id);
       return null;
     }
     else
-      return teacher;
+      return new TeacherRule(teacher, context);
   });
 }
 
@@ -86,4 +87,22 @@ export async function findTeacherAuth(teacher_id) {
       return teacher;
     }
   })
+}
+
+/**
+ *
+ * @param teacher_id
+ * @param new_data
+ * @param context
+ * @returns {Promise<void>}
+ */
+export async function editTeacher(teacher_id, new_data, context) {
+  return await TeacherModel.findOneAndUpdate({_id: teacher_id}, new_data, {upsert: false, new: true}).exec().then((err, teacher) => {
+    if (err) {
+      console.log(err);
+      return err;
+    } else {
+      return new TeacherRule(teacher, context);
+    }
+  });
 }

@@ -1,17 +1,23 @@
 import * as Teacher from '../connectors/teacherConnector';
 
+
 const teacherMap = {
   RootQuery: {
-    async teachers() {
-      return await Teacher.getTeachers();
+    async teachers(obj, args, context) {
+      return await Teacher.getTeachers(context);
     },
-    async teacherById(teacher_id) {
-      return await Teacher.findTeacherById(teacher_id);
+    async teacherById(obj, args, context) {
+      return await Teacher.findTeacherById(args.teacher_id, context);
     },
   },
   Mutation: {
-    async addTeacher(obj, args) {
-      return await Teacher.addTeacher(args);
+    async addTeacher(obj, args, context) {
+      return await Teacher.addTeacher(args.teacher);
+    },
+    async editTeacher(obj, args, context) {
+      const teacher = await Teacher.editTeacher(args.teacher_id, args.new_data, context);
+      console.log(teacher);
+      return teacher
     }
   }
 };

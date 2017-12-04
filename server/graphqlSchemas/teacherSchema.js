@@ -1,5 +1,6 @@
+
 const TeacherSchema = `
-  type Teacher {
+  type Teacher implements User{
     #Unique database identifier
     _id: ID!
     #Self descriptive
@@ -11,7 +12,9 @@ const TeacherSchema = `
     #List of sections this teacher owns
     sections: [ID!]
     #User type
-    type: String!
+    type: UserType!
+    #saved Auth Token
+    authToken: String
   }
   
   extend type RootQuery {
@@ -22,8 +25,22 @@ const TeacherSchema = `
   }
   
   extend type Mutation {
-    addTeacher(first_name: String!, last_name: String!, email: String!, 
-               password: String!): Teacher
+    addTeacher(teacher: CreateTeacher!): Teacher
+    editTeacher(teacher_id: ID!, new_data: EditTeacher!): Teacher
+  }
+  
+  input CreateTeacher {
+    first_name: String!
+    last_name: String!
+    email: String!
+    password: String!
+  }
+  
+  input EditTeacher {
+    first_name: String
+    last_name: String
+    email: String
+    sections: [ID]
   }
 `;
 
