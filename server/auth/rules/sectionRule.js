@@ -6,7 +6,7 @@ export const SectionRule = Rule.create({
   name: 'Section',
   props: {
     isTeacher: model => model.$context.type === 'teacher',
-    isOwner: model => model.$data._id == model.$context._id,
+    isOwner: model => model.$data.teacher._id == model.$context._id,
   },
   defaultRule: {
     read: model => true,
