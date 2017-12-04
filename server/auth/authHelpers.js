@@ -108,9 +108,11 @@ export function extractLoginData(body) {
  * @returns {{_id, unit_id: *, type}}
  */
 export function buildSignInPayload(user) {
+  console.log(user);
   return {
     _id: user._id,
-    unit_id: user.unit_id,
+    first_name: user.first_name,
+    last_name: user.last_name,
     type: user.type,
   }
 }
