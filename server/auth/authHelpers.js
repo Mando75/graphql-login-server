@@ -4,7 +4,7 @@
  */
 
 import {studentLogin, saveStudentToken} from '../connectors/studentConnector';
-import {teacherLogin, saveTeacherToken, findTeacherById} from "../connectors/teacherConnector";
+import {teacherLogin, saveTeacherToken} from "../connectors/teacherConnector";
 
 
 /**
@@ -17,13 +17,10 @@ export async function findUser(data) {
   switch (data.type) {
     case 'teacher':
       return await teacherLogin(data);
-      break;
     case 'student':
       return await studentLogin(data);
-      break;
     default:
       return {};
-      break;
   }
 }
 
@@ -45,7 +42,6 @@ export async function saveAuth(token, type, user_id) {
       break;
     default:
       return null;
-      break;
   }
 }
 

@@ -34,7 +34,6 @@ authRouter.post('/auth', async (req, res, next) => {
   // ensure that proper parameters were provided.
   if (req.body.unit_id && req.body.password && req.body.type) {
     const data = extractLoginData(req.body);
-
     // async call to find user based on login information
     let user = await findUser(data);
 
