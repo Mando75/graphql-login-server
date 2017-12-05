@@ -1,5 +1,5 @@
-import Mongoose from './mongodb-connection';
-import {StudentSchema} from "./monStudentSchema";
+import {Mongoose} from './mongodb-connection';
+// import {StudentSchema} from "./monStudentSchema";
 
 const SectionSchema = new Mongoose.Schema({
   course_code: String,

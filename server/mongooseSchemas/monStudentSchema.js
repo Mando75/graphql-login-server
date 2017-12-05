@@ -1,4 +1,4 @@
-import Mongoose from './mongodb-connection';
+import {Mongoose} from './mongodb-connection';
 
 /**
  *
