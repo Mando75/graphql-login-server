@@ -38,7 +38,7 @@ function importFiles() {
 
 
     childProcess.on('close', function (data) {
-      console.log('Closing Process')
+      console.log('Imported file')
     });
 
   });
