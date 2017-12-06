@@ -2870,6 +2870,10 @@ source-map@^0.5.6:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
 
+spawngo@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/spawngo/-/spawngo-2.0.0.tgz#cfd0a36e229b03789a6edd9202f1a04ec6ee0937"
+
 split@0.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/split/-/split-0.3.3.tgz#cd0eea5e63a211dfff7eb0f091c4133e2d0dd28f"

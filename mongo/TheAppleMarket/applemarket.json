@@ -1,0 +1,118 @@
+[
+  {
+  "name": "The Apple Market",
+  "size": 48,
+  "session_count": 2,
+  "Types:": [
+    {
+      "type": "Type A",
+      "distribution": 8,
+      "session_roles": [
+        {
+          "session": 1,
+          "role": "Apple Demander",
+          "value": 40.0,
+          "allow_sell": false
+        },
+        {
+          "session": 2,
+          "role": "Apple Supplier",
+          "value": 30.0,
+          "allow_sell": true
+        }
+      ]
+    },
+    {
+      "type": "Type B",
+      "distribution": 8,
+      "session_roles": [
+        {
+          "session": 1,
+          "role": "Apple Demander",
+          "value": 20.0,
+          "allow_sell": false
+        },
+        {
+          "session": 2,
+          "role": "Apple Supplier",
+          "value": 10.0,
+          "allow_sell": true
+        }
+      ]
+    },
+    {
+      "type": "Type C",
+      "distribution": 8,
+      "session_roles": [
+        {
+          "session": 1,
+          "role": "Apple Demander",
+          "value": 20.0,
+          "allow_sell": false
+        },
+        {
+          "session": 2,
+          "role": "Apple Demander",
+          "value": 40.0,
+          "allow_sell": false
+        }
+      ]
+    },
+    {
+      "type": "Type D",
+      "distribution": 8,
+      "session_roles": [
+        {
+          "session": 1,
+          "role": "Apple Supplier",
+          "value": 10.0,
+          "allow_sell": true
+        },
+        {
+          "session": 2,
+          "role": "Apple Demander",
+          "value": 20.0,
+          "allow_sell": false
+        }
+      ]
+    },
+    {
+      "type": "Type E",
+      "distribution": 8,
+      "session_roles": [
+        {
+          "session": 1,
+          "role": "Apple Supplier",
+          "value": 30.0,
+          "allow_sell": true
+        },
+        {
+          "session": 2,
+          "role": "Apple Demander",
+          "value": 40.0,
+          "allow_sell": false
+        }
+      ]
+    },
+    {
+      "type": "Type F",
+      "distribution": 8,
+      "session_roles": [
+        {
+          "session": 1,
+          "role": "Apple Supplier",
+          "value": 10.0,
+          "allow_sell": true
+        },
+        {
+          "session": 2,
+          "role": "Apple Supplier",
+          "value": 30.0,
+          "allow_sell": true
+        }
+      ]
+    }
+  ],
+    "_type": "AppleMarket"
+}
+]

@@ -38,9 +38,17 @@ server.use(passport.initialize());
 
 //server.use('*', cors({origin: 'http://localhost:3001'}));
 
+// import {AppleMarketModel} from "./server/mongooseSchemas/Experiments/TheAppleMarket/AppleMarketSchema";
+import {BasicExpModel} from "./server/mongooseSchemas/Experiments/BasicExpSchema";
 
 server.get('/', (req, res) => {
   res.json({message: "Server is running."});
+});
+
+server.get('/testMongo', async (req, res) => {
+  res.json(await BasicExpModel.find({}, (err, docs) => {
+    return docs || err;
+  }));
 });
 
 server.use(authRouter);
