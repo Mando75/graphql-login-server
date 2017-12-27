@@ -78,3 +78,7 @@ This project is licensed under the GNU Affero General Public License v3.0 - see 
 * A big thanks to all of the open source projects who's 
 packages we've used. We couldn't do it without you <3
 
+
+## Recent Changes
+I have begun developing a command-line tool which will assist in importing experiment templates saved
+in JSON files. That project is currently private, but once it is ready for release, I will post a binary here. 
